@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require_once __DIR__ . '/jetstream.php';
+
 Route::get('/', function () {
     return view('welcome');
 });
