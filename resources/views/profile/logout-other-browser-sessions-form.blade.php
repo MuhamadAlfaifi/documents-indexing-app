@@ -29,7 +29,7 @@
                             @endif
                         </div>
 
-                        <div class="ml-3">
+                        <div class="mr-3">
                             <div class="text-sm text-gray-600">
                                 {{ $session->agent->platform() ? $session->agent->platform() : 'Unknown' }} - {{ $session->agent->browser() ? $session->agent->browser() : 'Unknown' }}
                             </div>
@@ -56,7 +56,7 @@
                 {{ __('Log Out Other Browser Sessions') }}
             </x-jet-button>
 
-            <x-jet-action-message class="ml-3" on="loggedOut">
+            <x-jet-action-message class="mr-3" on="loggedOut">
                 {{ __('Done.') }}
             </x-jet-action-message>
         </div>
@@ -86,7 +86,7 @@
                     {{ __('Cancel') }}
                 </x-jet-secondary-button>
 
-                <x-jet-button class="ml-3"
+                <x-jet-button class="mr-3"
                             wire:click="logoutOtherBrowserSessions"
                             wire:loading.attr="disabled">
                     {{ __('Log Out Other Browser Sessions') }}

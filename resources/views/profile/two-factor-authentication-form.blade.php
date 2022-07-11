@@ -86,19 +86,19 @@
             @else
                 @if ($showingRecoveryCodes)
                     <x-jet-confirms-password wire:then="regenerateRecoveryCodes">
-                        <x-jet-secondary-button class="mr-3">
+                        <x-jet-secondary-button class="ml-3">
                             {{ __('Regenerate Recovery Codes') }}
                         </x-jet-secondary-button>
                     </x-jet-confirms-password>
                 @elseif ($showingConfirmation)
                     <x-jet-confirms-password wire:then="confirmTwoFactorAuthentication">
-                        <x-jet-button type="button" class="mr-3" wire:loading.attr="disabled">
+                        <x-jet-button type="button" class="ml-3" wire:loading.attr="disabled">
                             {{ __('Confirm') }}
                         </x-jet-button>
                     </x-jet-confirms-password>
                 @else
                     <x-jet-confirms-password wire:then="showRecoveryCodes">
-                        <x-jet-secondary-button class="mr-3">
+                        <x-jet-secondary-button class="ml-3">
                             {{ __('Show Recovery Codes') }}
                         </x-jet-secondary-button>
                     </x-jet-confirms-password>
