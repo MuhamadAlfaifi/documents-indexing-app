@@ -5,6 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
+function handleMutations(Request $request) {
+    $validated = $request->validate([
+        'name' => 'string',
+        'description' => 'string|min:5|nullable',
+    ]);
+
+    $tag = Tag::updateOrCreate(
+        [ 'name' => $validated['name'] ],
+        [ 'description' => $validated['description'] ],
+    );
+
+    return view('tags.show')->withTag($tag);
+}
+
 class TagController extends Controller
 {
     /**
@@ -14,7 +28,9 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+        $tags = Tag::all();
+
+        return view('tags.index')->withTags($tags);
     }
 
     /**
@@ -24,7 +40,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        return view('tags.create');
     }
 
     /**
@@ -35,7 +51,7 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return handleMutations($request);
     }
 
     /**
@@ -46,7 +62,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        //
+        return view('tags.show');
     }
 
     /**
@@ -57,7 +73,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        //
+        return view('tags.edit');
     }
 
     /**
@@ -69,7 +85,7 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        return handleMutations($request);
     }
 
     /**
@@ -80,6 +96,8 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        $tag->delete();
+
+        return redirect(route('tags.index'));
     }
 }
