@@ -1,0 +1,2 @@
+<!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+<a href="{{ $attributes['href'] }}" class="{{ $attributes['active'] === true ? 'text-gray-900 bg-gray-100' : 'text-gray-700' }} block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="option-menu-item-2"> {{ $slot }} </a>
