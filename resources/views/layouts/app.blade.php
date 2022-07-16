@@ -1,3 +1,5 @@
+@props(['tags' => []])
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" class="h-full bg-white">
     <head>
@@ -20,9 +22,9 @@
           <!-- Static sidebar for desktop -->
           <div
             class="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 lg:border-r lg:border-gray-200 lg:pt-5 lg:pb-4 lg:bg-gray-100">
-            <div class="flex items-center flex-shrink-0 px-6">
+            <a href="/" class="flex items-center flex-shrink-0 px-6">
               <img class="h-8 w-auto" src="/logo.svg" alt="الأرشيف الإلكتروني">
-            </div>
+            </a>
             <!-- Sidebar component, swap this element with another sidebar if you like -->
             <div class="mt-6 h-0 flex-1 flex flex-col overflow-y-auto">
               <!-- User account dropdown -->
@@ -32,7 +34,13 @@
                   <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" id="desktop-create-options">
                     إضافة مستند من</h3>
                   <div class="mt-1 space-x-1" role="group" aria-labelledby="desktop-create-options">
-                    <x-button>جهاز الكومبيوتر</x-button>
+                    <form action="{{ route('media') }}" enctype="multipart/form-data" method="POST" class="inline-flex">
+                      @csrf()
+                      <label class="inline-flex items-center px-3 py-2 border cursor-pointer border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <input type="file" name="media" onchange="event.target.form.submit()" class="sr-only" />
+                        جهاز الكومبيوتر
+                      </label>
+                    </form>
                     <x-button>الماسح الضوئي</x-button>
                   </div>
                 </div>
@@ -77,32 +85,32 @@
                 </div>
                 <div class="mt-8">
                   <!-- Secondary navigation -->
-                  <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" id="desktop-teams-headline">
+                  <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" id="desktop-management-headline">
                     الإدارة</h3>
-                  <div class="mt-1 space-y-1" role="group" aria-labelledby="desktop-teams-headline">
+                  <div class="mt-1 space-y-1" role="group" aria-labelledby="desktop-management-headline">
                     <a href="#"
-                    class="text-gray-700 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                    <!-- Heroicon name: outline/view-list -->
-                    <svg class="text-gray-400 group-hover:text-gray-500 ml-3 flex-shrink-0 h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    الصلاحيات والمستخدمين
-                  </a>
+                      class="text-gray-700 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                      <svg class="text-gray-400 group-hover:text-gray-500 ml-3 flex-shrink-0 h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                      الصلاحيات والمستخدمين
+                    </a>
+                    <a href="#"
+                      class="text-gray-700 hover:text-gray-900 hover:bg-gray-50 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                      <svg class="text-gray-400 group-hover:text-gray-500 ml-3 flex-shrink-0 h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"></path><path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"></path><path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"></path></svg>
+                      نسخ إحتياطي
+                    </a>
                   </div>
                 </div>
       
                 <div class="mt-8">
                   <!-- Secondary navigation -->
-                  <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" id="desktop-teams-headline">
+                  <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" id="desktop-tags-headline">
                     التصنيفات</h3>
-                  <div class="mt-1 space-y-1" role="group" aria-labelledby="desktop-teams-headline">
-                    <x-category-item href="#" bg="bg-indigo-500">
-                      الهندسة
+                  <div class="mt-1 space-y-1" role="group" aria-labelledby="desktop-tags-headline">
+                    @foreach ($tags as $tag)    
+                    <x-category-item href="#" :color="$tag->color">
+                      {{ $tag->name }}
                     </x-category-item>
-                    <x-category-item href="#" bg="bg-green-500">
-                      شخصي
-                    </x-category-item>
-                    <x-category-item href="#" bg="bg-yellow-500">
-                      العمليات الكهربائية
-                    </x-category-item>
+                    @endforeach
                   </div>
                 </div>
               </nav>
@@ -140,7 +148,8 @@
                       @endif
                     </div>
                     <div class="py-1" role="none">
-                      <form method="POST" action="#" role="none">
+                      <form method="POST" action="{{ route('logout') }}" role="none">
+                        @csrf()
                         <button type="submit" class="text-gray-700 block w-full text-right px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-3">تسجيل خروج</button>
                       </form>
                     </div>

@@ -62,4 +62,19 @@ class User extends Authenticatable
     public function posts() {
         return $this->hasMany(Post::class);
     }
+
+    /**
+     * Determine if the user owns the given post.
+     *
+     * @param  mixed  $post
+     * @return bool
+     */
+    public function ownsPost($post)
+    {
+        if (is_null($post)) {
+            return false;
+        }
+
+        return $this->id == $post->user_id;
+    }
 }

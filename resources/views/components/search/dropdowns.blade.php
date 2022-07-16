@@ -9,7 +9,7 @@
 
     <div class="relative z-10 bg-white border-b border-gray-200 pb-4">
       <div class="max-w-7xl mx-auto px-4 flex items-center justify-between sm:px-6 lg:px-8">
-        <x-dropdown>
+        <x-dropdown alignment="right">
           <x-slot:button>
             <div class="flex">
               <div class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" id="menu-button" aria-expanded="false" aria-haspopup="true">
@@ -147,7 +147,7 @@
 
         <div class="mt-0 mr-4">
           <div class="-m-1 flex flex-wrap items-center">
-            @foreach (range(1, 50) as $item)
+            @foreach (range(0, 4) as $item)
             <span class="m-1 inline-flex rounded-full border border-gray-200 items-center py-1.5 pr-3 pl-2 text-sm font-medium bg-white text-gray-900">
               <span>كائنات</span>
               <button type="button" class="flex-shrink-0 mr-1 h-4 w-4 p-1 rounded-full inline-flex text-gray-400 hover:bg-gray-200 hover:text-gray-500">

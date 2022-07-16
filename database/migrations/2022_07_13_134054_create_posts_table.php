@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
-            $table->string('keywords');
-            $table->foreignId('user_id')->constrained('users');
+            $table->text('description')->nullable();
+            $table->text('keywords')->nullable();
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('tag_id')->nullable();
             $table->timestamps();
         });
     }
