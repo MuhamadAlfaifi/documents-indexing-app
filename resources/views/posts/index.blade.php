@@ -1,11 +1,8 @@
 <x-app-layout :tags="$tags">
   <x-slot:pageTitle>الرئيسية</x-slot:pageTitle>
 
-  <!-- Archive Statistics -->
-  <x-stats />
-
   <!-- Search Filters -->
-  <x-search.dropdowns />
+  <x-search.dropdowns :tags="$tags" :users="$users" />
   
   <div class="px-8 my-4">
     {{ $posts->links() }}

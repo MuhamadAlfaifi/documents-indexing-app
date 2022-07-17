@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Team;
+use App\Models\Post;
 use App\Policies\TeamPolicy;
+use App\Policies\PostPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -15,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Team::class => TeamPolicy::class,
+        Post::class => PostPolicy::class,
     ];
 
     /**

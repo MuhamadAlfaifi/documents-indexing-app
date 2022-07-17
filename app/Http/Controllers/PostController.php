@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
+use App\Models\User;
 use App\Models\Post;
-use \Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
 
 class PostController extends Controller
@@ -22,16 +23,22 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::paginate(10);
+        $posts = Post::search($request->searchParams('q'))
+            ->whereIn('tag_id', $request->searchParams('tag'))
+            ->whereIn('user_id', $request->searchParams('user'))
+            ->paginate(10);
         $tags = Tag::all();
+        $users = User::all();
 
         return view('posts.index')
             ->withPosts($posts)
-            ->withTags($tags);
+            ->withTags($tags)
+            ->withUsers($users);
     }
 
     /**
@@ -57,12 +64,12 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|min:3',
-            'tag_id' => 'required|integer|exists:App\Models\Tag,id',
+            'tag' => 'required|integer|exists:App\Models\Tag,id',
             'description' => 'string|nullable',
             'keywords' => 'string|nullable',
         ]);
 
-        $validated['user_id'] = auth()->user()->id;
+        $validated['user'] = auth()->user()->id;
         
         $post = Post::create($validated);
         
@@ -108,12 +115,10 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|min:3',
-            'tag_id' => 'required|integer|exists:App\Models\Tag,id',
+            'tag' => 'required|integer|exists:App\Models\Tag,id',
             'description' => 'string|nullable',
             'keywords' => 'string|nullable',
         ]);
-
-        $validated['user_id'] = auth()->user()->id;
         
         $post->updateOrFail($validated);
 

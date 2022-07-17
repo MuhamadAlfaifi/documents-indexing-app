@@ -20,7 +20,7 @@ class TagFactory extends Factory
         $colors = new Colors;
 
         return [
-            'name' => fake()->company(),
+            'name' => fake()->unique()->company(),
             'description' => fake()->paragraph(),
             'color' => $colors->load()->getRandomColor(),
         ];
