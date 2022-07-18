@@ -26,11 +26,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Request $request)
     {
         $request->macro('urlSearchParams', function ($prepend = '&') use ($request) {
-            return $prepend . http_build_query($request->only(SearchParams::KEYS));
+            return $prepend . http_build_query($request->only(SearchParams::NAMES));
         });
 
-        $request->macro('searchParams', function ($key = null) use ($request) {
-            if (in_array($key, SearchParams::KEYS)) {
+        $request->macro('searchable', function ($key = null) use ($request) {
+            if (in_array($key, SearchParams::NAMES)) {
                 return SearchParams::$key($request);
             }
 

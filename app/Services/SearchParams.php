@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class SearchParams
 {
-    public const KEYS = ['tag', 'user', 'date', 'q'];
+    public const NAMES = ['tag', 'user', 'date', 'q'];
 
     public static function q(Request $request)
     {
@@ -37,7 +37,7 @@ class SearchParams
 
     public static function all(Request $request)
     {
-        return collect(self::KEYS)->flatMap(function ($key) use ($request) {
+        return collect(self::NAMES)->flatMap(function ($key) use ($request) {
             $item = $request->query($key, []); // $item type could be str or arr
 
             if (!is_array($item)) {

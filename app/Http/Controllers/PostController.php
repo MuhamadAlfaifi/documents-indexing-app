@@ -20,6 +20,22 @@ class PostController extends Controller
         $this->authorizeResource(Post::class, 'post');
     }
 
+    private function searchPosts(Request $request)
+    {
+        $temp = \Carbon\Carbon::create('2022-07-17 17:17:25');
+        $date = fn ($query) => $query->where('created_at', '>', $temp)->where('created_at', '<', now());
+        
+        if ($request->missing('q')) {
+            return Post::where($date)->orderBy('created_at', 'desc')->paginate(10);
+        }
+
+        return Post::search($request->searchable('q'))
+            ->whereIn('tag_id', $request->searchable('tag'))
+            ->whereIn('user_id', $request->searchable('user'))
+            ->query($date)
+            ->paginate(10);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,10 +44,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::search($request->searchParams('q'))
-            ->whereIn('tag_id', $request->searchParams('tag'))
-            ->whereIn('user_id', $request->searchParams('user'))
-            ->paginate(10);
+        $posts = $this->searchPosts($request);
         $tags = Tag::all();
         $users = User::all();
 

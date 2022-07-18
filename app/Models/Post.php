@@ -43,4 +43,20 @@ class Post extends Model implements HasMedia
             ->fit(Manipulations::FIT_CROP, 300, 300)
             ->nonQueued();
     }
+
+    #[SearchUsingFullText(['title', 'description', 'keywords'])]
+    public function toSearchableArray()
+    {
+        $searchable = [
+            'id' => null,
+            'title' => null,
+            'description' => null,
+            'keywords' => null,
+            'tag_id' => null,
+            'user_id' => null,
+            'created_at' => null,
+        ];
+
+        return $searchable;
+    }
 }

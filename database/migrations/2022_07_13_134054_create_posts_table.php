@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->text('keywords')->nullable();
+            $table->string('title')->fullText();
+            $table->text('description')->fullText()->nullable();
+            $table->text('keywords')->fullText()->nullable();
             $table->foreignId('user_id')->nullable();
             $table->foreignId('tag_id')->nullable();
             $table->timestamps();
