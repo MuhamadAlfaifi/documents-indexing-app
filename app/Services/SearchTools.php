@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-class SearchParams
+class SearchTools
 {
     public const NAMES = ['tag', 'user', 'date', 'query', 'sort'];
     public const OLDEST_CREATED_AT_VALUE = '2022-07-17 17:17:25';

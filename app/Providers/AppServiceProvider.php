@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Request;
-use App\Services\SearchParams;
+use App\Services\SearchTools;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,17 +26,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Request $request)
     {
         \Request::macro('searchable', function ($key = null) use ($request) {
-            if (in_array($key, SearchParams::NAMES)) {
-                return SearchParams::$key($request);
+            if (in_array($key, SearchTools::NAMES)) {
+                return SearchTools::$key($request);
             }
         });
         
         \Request::macro('searchParams', function () use ($request) {
-            return $request->only(SearchParams::NAMES);
+            return $request->only(SearchTools::NAMES);
         });
         
         \Request::macro('blankParams', function () use ($request) {
-            return collect($request->only(SearchParams::NAMES))->flatten()->every(fn ($param) => blank($param));
+            return collect($request->only(SearchTools::NAMES))->flatten()->every(fn ($param) => blank($param));
         });
 
         \Illuminate\Support\Stringable::macro('if', function (bool $boolean) {

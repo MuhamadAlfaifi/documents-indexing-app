@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use App\Services\SearchParams;
+use App\Services\SearchTools;
 
 class SearchController extends Controller
 {
