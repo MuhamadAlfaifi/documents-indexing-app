@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
 use Spatie\PdfToText\Pdf as FileKeywordsSuggestions;
+use App\Services\MediaPath;
 
 class PostController extends Controller
 {
@@ -46,7 +47,7 @@ class PostController extends Controller
     {
         $tags = Tag::all();
 
-        $suggestedKeywords = $this->getKeywordsSuggestions(MediaController::getUploadedFile($request));
+        $suggestedKeywords = $this->getKeywordsSuggestions(MediaPath::getUploadedFile($request));
 
         return view('posts.create', compact('suggestedKeywords', 'tags'));
     }
@@ -81,7 +82,7 @@ class PostController extends Controller
         
         $post = Post::create($validated);
                 
-        $post->addMediaFromDisk(MediaController::getUploadedFile($request), 'local')->toMediaCollection();
+        $post->addMediaFromDisk(MediaPath::getUploadedFile($request, false), 'local')->toMediaCollection();
 
         return redirect(route('posts.index'));
     }
