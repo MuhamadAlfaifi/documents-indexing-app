@@ -46,31 +46,20 @@ class PostController extends Controller
     {
         $tags = Tag::all();
 
-        $suggestedKeywords = $this->getKeywordsSuggestions($request->query('tmp'));
+        $suggestedKeywords = $this->getKeywordsSuggestions(MediaController::getUploadedFile($request));
 
         return view('posts.create', compact('suggestedKeywords', 'tags'));
     }
 
-    private function tmpPath($filename)
+    private function getKeywordsSuggestions($file)
     {
-        $tmpPath = storage_path('app/tmp');
-
-        if (is_null($filename)) {
-            return $tmpPath;
-        }
-
-        return join('/', [$tmpPath, $filename]);
-    }
-
-    private function getKeywordsSuggestions($filename)
-    {
-        $parts = pathinfo($filename);
+        $parts = pathinfo($file);
 
         if ($parts['extension'] !== 'pdf') {
             return '';
         }
 
-        return FileKeywordsSuggestions::getText($this->tmpPath($filename));
+        return FileKeywordsSuggestions::getText($file);
     }
 
     /**
@@ -91,10 +80,8 @@ class PostController extends Controller
         $validated['user_id'] = auth()->user()->id;
         
         $post = Post::create($validated);
-        
-        $pathToFile = '/tmp/' . $request->get('tmp');
-        
-        $post->addMediaFromDisk($pathToFile, 'local')->toMediaCollection();
+                
+        $post->addMediaFromDisk(MediaController::getUploadedFile($request), 'local')->toMediaCollection();
 
         return redirect(route('posts.index'));
     }
