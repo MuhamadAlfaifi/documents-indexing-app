@@ -8,11 +8,10 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Laravel\Scout\Searchable;
 
 class Post extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia, Searchable;
+    use HasFactory, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -37,26 +36,9 @@ class Post extends Model implements HasMedia
      * @return void
      */
     public function registerMediaConversions(Media $media = null): void
-    {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Manipulations::FIT_CROP, 300, 300)
-            ->nonQueued();
-    }
-
-    #[SearchUsingFullText(['title', 'description', 'keywords'])]
-    public function toSearchableArray()
-    {
-        $searchable = [
-            'id' => null,
-            'title' => null,
-            'description' => null,
-            'keywords' => null,
-            'tag_id' => null,
-            'user_id' => null,
-            'created_at' => null,
-        ];
-
-        return $searchable;
+    {       
+        $this->addMediaConversion('thumbnail')
+            ->width(368)
+            ->height(232);
     }
 }

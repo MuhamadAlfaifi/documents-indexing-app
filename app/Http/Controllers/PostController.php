@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
+use Spatie\PdfToText\Pdf as FileKeywordsSuggestions;
 
 class PostController extends Controller
 {
@@ -20,22 +21,6 @@ class PostController extends Controller
         $this->authorizeResource(Post::class, 'post');
     }
 
-    private function searchPosts(Request $request)
-    {
-        $temp = \Carbon\Carbon::create('2022-07-17 17:17:25');
-        $date = fn ($query) => $query->where('created_at', '>', $temp)->where('created_at', '<', now());
-        
-        if ($request->missing('q')) {
-            return Post::where($date)->orderBy('created_at', 'desc')->paginate(10);
-        }
-
-        return Post::search($request->searchable('q'))
-            ->whereIn('tag_id', $request->searchable('tag'))
-            ->whereIn('user_id', $request->searchable('user'))
-            ->query($date)
-            ->paginate(10);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -44,14 +29,11 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = $this->searchPosts($request);
+        $posts = Post::orderBy(...$request->searchable('sort'))->paginate(10);
         $tags = Tag::all();
         $users = User::all();
 
-        return view('posts.index')
-            ->withPosts($posts)
-            ->withTags($tags)
-            ->withUsers($users);
+        return view('posts.index', compact('posts','tags','users'));
     }
 
     /**
@@ -64,7 +46,31 @@ class PostController extends Controller
     {
         $tags = Tag::all();
 
-        return view('posts.create')->withTags($tags);
+        $suggestedKeywords = $this->getKeywordsSuggestions($request->query('tmp'));
+
+        return view('posts.create', compact('suggestedKeywords', 'tags'));
+    }
+
+    private function tmpPath($filename)
+    {
+        $tmpPath = storage_path('app/tmp');
+
+        if (is_null($filename)) {
+            return $tmpPath;
+        }
+
+        return join('/', [$tmpPath, $filename]);
+    }
+
+    private function getKeywordsSuggestions($filename)
+    {
+        $parts = pathinfo($filename);
+
+        if ($parts['extension'] !== 'pdf') {
+            return '';
+        }
+
+        return FileKeywordsSuggestions::getText($this->tmpPath($filename));
     }
 
     /**
@@ -77,12 +83,12 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|min:3',
-            'tag' => 'required|integer|exists:App\Models\Tag,id',
+            'tag_id' => 'required|integer|exists:App\Models\Tag,id',
             'description' => 'string|nullable',
             'keywords' => 'string|nullable',
         ]);
 
-        $validated['user'] = auth()->user()->id;
+        $validated['user_id'] = auth()->user()->id;
         
         $post = Post::create($validated);
         
@@ -101,7 +107,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show')->withPost($post);
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -114,7 +120,7 @@ class PostController extends Controller
     {
         $tags = Tag::all();
 
-        return view('posts.edit')->withPost($post)->withTags($tags);
+        return view('posts.edit', compact('post', 'tags'));
     }
 
     /**
@@ -128,7 +134,7 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|min:3',
-            'tag' => 'required|integer|exists:App\Models\Tag,id',
+            'tag_id' => 'required|integer|exists:App\Models\Tag,id',
             'description' => 'string|nullable',
             'keywords' => 'string|nullable',
         ]);

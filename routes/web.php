@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\SearchController;
 
 require_once __DIR__ . '/jetstream.php';
 
@@ -17,4 +18,5 @@ Route::middleware([
     Route::resource('tags', TagController::class);
     Route::resource('posts', PostController::class);
     Route::post('/media', MediaController::class)->name('media');
+    Route::get('/search', SearchController::class)->name('search');
 });

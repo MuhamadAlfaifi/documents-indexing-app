@@ -34,7 +34,7 @@
             <label for="keywords" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> كلمات مفتاحية </label>
             <div class="mt-1 sm:mt-0 sm:col-span-2">
               <textarea id="keywords" name="keywords" rows="3"
-                class="max-w-lg shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md"></textarea>
+                class="max-w-lg shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md">{{ $suggestedKeywords }}</textarea>
               <p class="mt-2 text-sm text-gray-500">(اختياري)</p>
             </div>
           </div>
@@ -43,43 +43,10 @@
 
       <div class="divide-y divide-gray-200 pt-8 space-y-6 sm:pt-10 sm:space-y-5">
         <div>
-          <h3 class="text-lg leading-6 font-medium text-gray-900">التصنيفات وصلاحيات الوصول</h3>
-          <p class="mt-1 max-w-2xl text-sm text-gray-500">منع مستخدمين من الوصول للملف، وإختيار تصنيف للملف.</p>
+          <h3 class="text-lg leading-6 font-medium text-gray-900">التصنيفات</h3>
+          <p class="mt-1 max-w-2xl text-sm text-gray-500">إختيار تصنيف للملف.</p>
         </div>
         <div class="space-y-6 sm:space-y-5 divide-y divide-gray-200">
-          <div class="pt-6 sm:pt-5">
-            <div role="group" aria-labelledby="access-permissions">
-              <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-baseline">
-                <div>
-                  <div class="text-base font-medium text-gray-900 sm:text-sm sm:text-gray-700" id="access-permissions">السماح بالوصول للملف</div>
-                </div>
-                <div class="mt-4 sm:mt-0 sm:col-span-2">
-                  <div class="max-w-lg space-y-4">
-                    <div class="relative flex items-start">
-                      <div class="flex items-center h-5">
-                        <input id="admin-users" disabled type="checkbox"
-                          class="h-4 w-4 text-indigo-300 border-gray-300 rounded" checked>
-                      </div>
-                      <div class="mr-3 text-sm">
-                        <label for="admin-users" class="font-medium text-gray-400">حساب الإدارة</label>
-                      </div>
-                    </div>
-                    @foreach ([12894 => 'علي سماري', 3215 => 'ماجد الحربي', 33732 => 'خالد المالكي'] as $key => $value)
-                    <div class="relative flex items-start">
-                      <div class="flex items-center h-5">
-                        <input id="whitelist-{{ $key }}" name="whitelist[]" type="checkbox"
-                          class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" value="{{ $key }}" checked>
-                      </div>
-                      <div class="mr-3 text-sm">
-                        <label for="whitelist-{{ $key }}" class="font-medium text-gray-700">{{ $value }}</label>
-                      </div>
-                    </div>
-                    @endforeach
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="pt-6 sm:pt-5">
             <div role="group" aria-labelledby="tag">
               <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-baseline">

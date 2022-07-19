@@ -9,7 +9,7 @@
   <section aria-labelledby="filter-heading">
     <h2 id="filter-heading" class="sr-only">الفلاتر</h2>
 
-    <form action="{{ route('posts.index') }}" class="relative z-10 bg-white border-b border-gray-200 pb-4">
+    <form action="{{ route('search') }}" class="relative z-10 bg-white border-b border-gray-200 pb-4">
       <div class="max-w-7xl mx-auto px-4 flex items-center justify-between sm:px-6 lg:px-8">
         <x-dropdown alignment="right">
           <x-slot:button>
@@ -24,14 +24,14 @@
             </div>
           </x-slot:button>
           <div class="py-1" role="menu">
-            @foreach (['التاريخ', 'إسم الملف', 'رقم الملف', 'المستخدم'] as $idx => $field)
-            <label class="text-gray-500 cursor-pointer hover:bg-gray-100 {{ $idx === 0 ? 'font-medium text-gray-900' : 'text-gray-500' }} block px-4 py-2 text-sm" role="menuitemradio" tabindex="-1"> 
-              <input onchange="event.target.form.submit()" type="radio" name="sort" value="{{ join(',', [$field, 'desc']) }}" {{ request()->has('sort') ? '' : '' }} class="sr-only" />
+            @foreach (['created_at' => 'التاريخ', 'title' => 'إسم الملف', 'id' => 'رقم الملف'] as $idx => $field)
+            <label class="cursor-pointer hover:bg-gray-100 {{ request()->searchable('sort') === [$idx, 'desc'] ? 'font-medium text-gray-900' : 'text-gray-500' }} block px-4 py-2 text-sm" role="menuitemradio" tabindex="-1"> 
+              <input onchange="event.target.form.submit()" type="radio" name="sort" value="{{ join(',', [$idx, 'desc']) }}" {{ str('checked')->if(request()->searchable('sort') === [$idx, 'desc']) }} class="sr-only" />
               {{ $field }}: الأحدث 
             </label>
             
-            <label class="text-gray-500 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitemradio" tabindex="-1"> 
-              <input onchange="event.target.form.submit()" type="radio" name="sort" value="{{ join(',', [$field, 'asc']) }}" class="sr-only" /> 
+            <label class="cursor-pointer hover:bg-gray-100 {{ request()->searchable('sort') === [$idx, 'asc'] ? 'font-medium text-gray-900' : 'text-gray-500' }} block px-4 py-2 text-sm" role="menuitemradio" tabindex="-1"> 
+              <input onchange="event.target.form.submit()" type="radio" name="sort" value="{{ join(',', [$idx, 'asc']) }}" {{ str('checked')->if(request()->searchable('sort') === [$idx, 'asc']) }} class="sr-only" /> 
               {{ $field }}: الأقدم 
             </label>
             @endforeach
@@ -41,12 +41,12 @@
         <div class="flow-root">
           <div class="-mx-4 flex items-center  divide-x-reverse divide-x divide-gray-200">
             <div class="px-4 text-left">
-              <x-reveal :defaultValue="request()->searchable('q')">
+              <x-reveal :defaultValue="request()->query('query')">
                 <x-slot:button>
                   <svg class="w-4 h-4 text-gray-400 hover:text-gray-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                 </x-slot:button>
                 <div class="h-6">
-                  <input type="text" name="q" value="{{ request()->searchable('q') }}" class="block w-full h-full border-0 border-b border-transparent rounded-md bg-gray-100 focus:border-indigo-600 focus:ring-0 sm:text-sm" placeholder="بحث اسم الملف">
+                  <input type="text" name="query" value="{{ request()->query('query') }}" class="block w-full h-full border-0 border-b border-transparent rounded-md bg-gray-100 focus:border-indigo-600 focus:ring-0 sm:text-sm" placeholder="بحث اسم الملف">
                 </div>
               </x-reveal>
             </div>
@@ -73,11 +73,7 @@
                     <label for="filter-tag-{{ $tag->id }}" class="font-normal cursor-pointer block truncate"> {{ $tag->name }} </label>
                     <input onchange="event.target.form.submit()" id="filter-tag-{{ $tag->id }}" name="tag[]" value="{{ $tag->id }}" type="checkbox" {{ !in_array($tag->id, request()->query('tag') ?? []) ?: 'checked' }} class="sr-only">
             
-                    <!--
-                      Checkmark, only display for selected option.
-            
-                      Highlighted: "text-white", Not Highlighted: "text-indigo-600"
-                    -->
+                    <!-- Checkmark, only display for selected option.  -->
                     @if (in_array($tag->id, request()->query('tag') ?? []))
                     <span class="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-1.5">
                       <!-- Heroicon name: solid/check -->
@@ -140,7 +136,7 @@
                     <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                   </div>
                 </x-slot:button>
-                <x-datepicker.daterangepicker name="date" onchange="event.target.form.submit()" :selectedDate="request()->query('date', '2021-02-04')" />
+                <x-datepicker.daterangepicker name="date" onchange="event.target.form.submit()" :selectedDate="request()->query('date')" />
               </x-reveal>
             </div>
           </div>

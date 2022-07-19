@@ -17,6 +17,10 @@
           <p>{{ $post->title }}</p>
         </div>
         <div class="flex space-x-reverse space-x-2">
+          <strong>كلمات مفتاحية: </strong>
+          <p>{{ $post->keywords }}</p>
+        </div>
+        <div class="flex space-x-reverse space-x-2">
           <strong>التصنيف: </strong>
           <p>{{ $post->tag->name }}</p>
         </div>
@@ -33,8 +37,15 @@
 
     <div class="relative z-10 bg-white pb-4">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <a href="{{ $post->getFirstMediaUrl() }}" download="{{ join(' - ', [$post->title, $post->created_at])}}">تحميل الملف</a>
-        <img src="{{ $post->getFirstMediaUrl('default', 'preview') }}" onerror="event.target.src='https://via.placeholder.com/100x100'" class="aspect-square" alt="" />
+        
+        <h1>listing</h1>
+        @foreach ($post->getMedia('default') as $media)
+          <a href="{{ $media->getUrl() }}" download="{{ join(' - ', [$post->title, $post->created_at])}}">تحميل الملف</a>
+          <img src="{{ $media->getUrl('thumbnail') }}" onerror="event.target.src='https://via.placeholder.com/100x100'" class="aspect-square" alt="" />
+          <br />
+          <img src="{{ $media->getUrl() }}" onerror="event.target.src='https://via.placeholder.com/100x100'" class="aspect-square" alt="" />
+          <br />
+        @endforeach
       </div>
     </div>
   </div>

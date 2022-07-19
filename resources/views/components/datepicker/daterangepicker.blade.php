@@ -1,9 +1,9 @@
-@props(['name' => 'date', 'selectedDate' => '2021-02-04'])
+@props(['name' => 'date', 'selectedDate' => ''])
 
 <div class="h-6">
   <div id="reportrange" class="block px-2 w-full h-full border-0 border-b border-transparent rounded-md bg-gray-100 focus:border-indigo-600 focus:ring-0 sm:text-sm">
     <span class="w-48 h-full"></span>
-    <input type="hidden" onchange="event.target.form.submit()" name="{{ $name }}" />
+    <input type="hidden" onchange="event.target.form.submit()" {{ str('disabled')->if(blank($selectedDate)) }} name="{{ $name }}" />
   </div>
 </div>
 
