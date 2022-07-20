@@ -23,8 +23,10 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Request $request)
+    public function boot()
     {
+        $this->app->singleton(SearchTools::class);
+
         // flattens query string parameters into a list of [kev,val] pairs
         \Illuminate\Support\Collection::macro('pairs', function () {
             return $this->flatMap(function ($value, $key) {
@@ -36,26 +38,30 @@ class AppServiceProvider extends ServiceProvider
             });
         });
 
-        \Illuminate\Support\Facades\Request::macro('filterable', function ($key = null) use ($request) {
+        \Illuminate\Support\Facades\Request::macro('tools', function () {
+            return app(SearchTools::class);
+        });
+
+        \Illuminate\Support\Facades\Request::macro('filterable', function ($key = null) {
             if (in_array($key, SearchTools::NAMES)) {
-                return SearchTools::$key($request);
+                return app(SearchTools::class)->{$key}();
             }
         });
         
-        \Illuminate\Support\Facades\Request::macro('filters', function () use ($request) {
-            return collect($request->only(SearchTools::NAMES))
+        \Illuminate\Support\Facades\Request::macro('filters', function () {
+            return collect($this->only(SearchTools::NAMES))
                 ->filter(fn ($param) => filled($param))
                 ->pairs()
-                ->map(function ($pair) use ($request) {
-                    $unfilter = SearchTools::regenerateUrl($request, $pair);
+                ->map(function ($pair) {
+                    $unfilter = app(SearchTools::class)->regenerateUrl($pair);
                     
                     return [ ...$pair, $unfilter ];
                 })
                 ->toArray();
         });
         
-        \Illuminate\Support\Facades\Request::macro('blank', function () use ($request) {
-            return collect($request->only(SearchTools::NAMES))->flatten()->every(fn ($param) => blank($param));
+        \Illuminate\Support\Facades\Request::macro('blank', function () {
+            return collect($this->only(SearchTools::NAMES))->flatten()->every(fn ($param) => blank($param));
         });
 
         \Illuminate\Support\Stringable::macro('if', function (bool $boolean) {

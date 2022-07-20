@@ -136,14 +136,21 @@
             </div>
 
             <div class="px-4 text-left">              
-              <x-reveal :defaultValue="request()->has('date')">
+              <x-reveal :defaultValue="filled(request()->only(['from', 'to']))">
                 <x-slot:button>
                   <div class="space-x-reverse space-x-1.5 inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 [&>svg]:hover:text-gray-600">
                     <span class="">التاريخ</span>
                     <x-heroicons.calendar class="h-4 w-4 text-gray-400" />
                   </div>
                 </x-slot:button>
-                <x-datepicker.daterangepicker name="date" onchange="event.target.form.submit()" :selectedDate="request()->query('date')" />
+                <div class="h-6">
+                  <div id="" class="block relative text-center px-2 w-full h-full border-0 border-b border-transparent rounded-md bg-gray-100 focus:border-indigo-600 focus:ring-0 sm:text-sm">
+                    <div class="w-52 relative top-1/2 -translate-y-1/2"></div>
+                    <x-input.date name="from" submit value="{{ request()->query('from') }}" />
+                    &larr;
+                    <x-input.date name="to" submit value="{{ request()->query('to') }}" />
+                  </div>
+                </div>
               </x-reveal>
             </div>
           </div>
@@ -167,8 +174,10 @@
               @foreach (request()->filters() as [$key, $value, $unfilter])
                 @if($key === 'query')
                   <x-search.active-filter :href="$unfilter">{{ $value }}</x-search.active-filter>
-                @elseif($key === 'date')
-                  <x-search.active-filter :href="$unfilter">date: {{ $value }}</x-search.active-filter>
+                @elseif($key === 'from')
+                  <x-search.active-filter :href="$unfilter">من: {{ $value }}</x-search.active-filter>
+                @elseif($key === 'to')
+                  <x-search.active-filter :href="$unfilter">إلى: {{ $value }}</x-search.active-filter>
                 @elseif($key === 'tag')
                   <x-search.active-filter :href="$unfilter">{{ optional($tags->find($value))->name }}</x-search.active-filter>
                 @elseif($key === 'user')

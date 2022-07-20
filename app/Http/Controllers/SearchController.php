@@ -32,20 +32,24 @@ class SearchController extends Controller
     {
         $postsQuery = Post::query()->with('tag')->with('user');
 
-        if ($request->has('query')) {
+        if ($request->filled('query')) {
             $postsQuery->where('title', 'like', $request->filterable('query'));
         }
         
-        if ($request->has('tag')) {
+        if ($request->filled('tag')) {
             $postsQuery->whereIn('tag_id', $request->filterable('tag'));
         }
         
-        if ($request->has('user')) {
+        if ($request->filled('user')) {
             $postsQuery->whereIn('user_id', $request->filterable('user'));
         }
         
-        if ($request->has('date')) {
-            $postsQuery->whereBetween('created_at', $request->filterable('date'));
+        if ($request->filled('from')) {
+            $postsQuery->where('created_at', '>=', $request->filterable('from'));
+        }
+        
+        if ($request->filled('to')) {
+            $postsQuery->where('created_at', '=<', $request->filterable('to'));
         }
         
         return $postsQuery->orderBy(...$request->filterable('sort'))->paginate(10)->appends($request->query());

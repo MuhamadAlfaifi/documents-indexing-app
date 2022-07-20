@@ -9,52 +9,76 @@ use Carbon\Carbon;
 
 class SearchTools
 {
-    public const NAMES = ['tag', 'user', 'date', 'query', 'sort'];
-    public const OLDEST_CREATED_AT_VALUE = '2022-07-17 17:17:25';
-    
-    public static function oldest()
+    public const NAMES = ['tag', 'user', 'from', 'to', 'query', 'sort'];
+
+    public function __construct(Request $request)
     {
-        return Carbon::create(self::OLDEST_CREATED_AT_VALUE);
+        $this->request = $request;
+    }
+    
+    public function min()
+    {
+        $zero = cache()->rememberForever('zero', function() {
+            $zero = User::orderBy('created_at', 'asc')->first();
+
+            if (!$zero) {
+                return now()->timestamp;
+            }
+
+            return $zero->created_at->timestamp;
+        });
+
+        return Carbon::createFromTimestamp($zero);
     }
 
-    public static function query(Request $request)
+    public function max()
     {
-        if ($request->missing('query')) {
+        return now();
+    }
+
+    public function query()
+    {
+        if ($this->request->missing('query')) {
             return '';
         }
 
-        return '%' . $request->query('query') . '%';
+        return '%' . $this->request->query('query') . '%';
     }
     
-    public static function tag(Request $request) 
+    public function tag() 
     {
-        return $request->query('tag');
+        return $this->request->query('tag');
     }
     
-    public static function user(Request $request) 
+    public function user() 
     {
-        return $request->query('user');
+        return $this->request->query('user');
     }
     
-    public static function date(Request $request) 
+    public function from() 
     {
-        return [now()->subWeek(), now()];
+        return Carbon::create($this->request->query('from'));
+    }
+    
+    public function to() 
+    {
+        return Carbon::create($this->request->query('to'));
     }
 
-    public static function sort(Request $request) 
+    public function sort() 
     {
-        if ($request->missing('sort')) {
+        if ($this->request->missing('sort')) {
             return ['created_at', 'desc'];
         }
 
-        return explode(',', $request->query('sort'));
+        return explode(',', $this->request->query('sort'));
     }
 
-    public static function regenerateUrl(Request $request, $pair)
+    public function regenerateUrl($pair)
     {
         [$key, $value] = $pair;
         
-        $query = $request->query();
+        $query = $this->request->query();
         
         if (is_array($query[$key])) {                
             $query[$key] = array_filter($query[$key], fn ($x) => $x !== $value);
