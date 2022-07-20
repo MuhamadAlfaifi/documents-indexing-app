@@ -49,4 +49,19 @@ class SearchTools
 
         return explode(',', $request->query('sort'));
     }
+
+    public static function regenerateUrl(Request $request, $pair)
+    {
+        [$key, $value] = $pair;
+        
+        $query = $request->query();
+        
+        if (is_array($query[$key])) {                
+            $query[$key] = array_filter($query[$key], fn ($x) => $x !== $value);
+        } else {
+            $query = \Arr::except($query, $key);
+        }
+        
+        return url()->current() . '?' . \Arr::query($query);
+    }
 }

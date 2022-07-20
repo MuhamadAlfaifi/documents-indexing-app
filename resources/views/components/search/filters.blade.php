@@ -152,7 +152,7 @@
     </form>
 
     <!-- Active filters -->
-    @if(request()->activeFilters())
+    @if(!empty(request()->filters()))
       <div class="bg-gray-100">
         <div class="max-w-7xl mx-auto py-3 px-4 sm:flex sm:items-center sm:px-6 lg:px-8">
           <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500">
@@ -164,16 +164,16 @@
 
           <div class="mt-0 mr-4">
             <div class="-m-1 flex flex-wrap items-center">
-              @foreach (request()->activeFilters() as $key => $item)
-                <span class="m-1 inline-flex rounded-full border border-gray-200 items-center py-1.5 pr-3 pl-2 text-sm font-medium bg-white text-gray-900">
-                  <span>كائنات</span>
-                  <button type="button" class="flex-shrink-0 mr-1 h-4 w-4 p-1 rounded-full inline-flex text-gray-400 hover:bg-gray-200 hover:text-gray-500">
-                    <span class="sr-only">إزالة فلتر</span>
-                    <svg class="h-2 w-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
-                      <path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" />
-                    </svg>
-                  </button>
-                </span>
+              @foreach (request()->filters() as [$key, $value, $unfilter])
+                @if($key === 'query')
+                  <x-search.active-filter :href="$unfilter">{{ $value }}</x-search.active-filter>
+                @elseif($key === 'date')
+                  <x-search.active-filter :href="$unfilter">date: {{ $value }}</x-search.active-filter>
+                @elseif($key === 'tag')
+                  <x-search.active-filter :href="$unfilter">{{ optional($tags->find($value))->name }}</x-search.active-filter>
+                @elseif($key === 'user')
+                  <x-search.active-filter :href="$unfilter">{{ optional($users->find($value))->name }}</x-search.active-filter>
+                @endif
               @endforeach
             </div>
           </div>

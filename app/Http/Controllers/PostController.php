@@ -30,7 +30,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::orderBy(...$request->searchable('sort'))->paginate(10);
+        $posts = Post::orderBy(...$request->filterable('sort'))->paginate(10);
         $tags = Tag::all();
         $users = User::all();
 

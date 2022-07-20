@@ -17,37 +17,37 @@ class SearchController extends Controller
      */
     public function __invoke(Request $request)
     {
-        if ($request->blankParams()) {
+        if ($request->blank()) {
             return to_route('posts.index');
         }
 
-        $posts = $this->searchPosts($request);
+        $posts = $this->filterPosts($request);
         $tags = \App\Models\Tag::all();
         $users = \App\Models\User::all();
 
         return view('posts.index', compact('posts', 'users', 'tags'));
     }
     
-    private function searchPosts(Request $request)
+    private function filterPosts(Request $request)
     {
         $postsQuery = Post::query()->with('tag')->with('user');
 
         if ($request->has('query')) {
-            $postsQuery->where('title', 'like', $request->searchable('query'));
+            $postsQuery->where('title', 'like', $request->filterable('query'));
         }
         
         if ($request->has('tag')) {
-            $postsQuery->whereIn('tag_id', $request->searchable('tag'));
+            $postsQuery->whereIn('tag_id', $request->filterable('tag'));
         }
         
         if ($request->has('user')) {
-            $postsQuery->whereIn('user_id', $request->searchable('user'));
+            $postsQuery->whereIn('user_id', $request->filterable('user'));
         }
         
         if ($request->has('date')) {
-            $postsQuery->whereBetween('created_at', $request->searchable('date'));
+            $postsQuery->whereBetween('created_at', $request->filterable('date'));
         }
         
-        return $postsQuery->orderBy(...$request->searchable('sort'))->paginate(10)->appends($request->query());
+        return $postsQuery->orderBy(...$request->filterable('sort'))->paginate(10)->appends($request->query());
     }
 }
