@@ -2,7 +2,7 @@
   <x-slot:pageTitle>الرئيسية</x-slot:pageTitle>
 
   <!-- Search Filters -->
-  <x-search.dropdowns :tags="$tags" :users="$users" />
+  <x-search.filters :tags="$tags" :users="$users" />
   
   <div class="px-8 my-4">
     {{ $posts->links() }}

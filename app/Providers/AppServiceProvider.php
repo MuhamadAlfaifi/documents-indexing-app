@@ -31,8 +31,8 @@ class AppServiceProvider extends ServiceProvider
             }
         });
         
-        \Request::macro('searchParams', function () use ($request) {
-            return $request->only(SearchTools::NAMES);
+        \Request::macro('activeFilters', function () use ($request) {
+            return collect($request->only(SearchTools::NAMES))->filter(fn ($param) => filled($param));
         });
         
         \Request::macro('blankParams', function () use ($request) {
