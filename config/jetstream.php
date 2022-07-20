@@ -29,7 +29,7 @@ return [
      |
      */
 
-    'middleware' => ['web'],
+    'middleware' => ['web', 'deny:teams,team,current-team'],
 
     'auth_session' => AuthenticateSession::class,
 
@@ -62,7 +62,7 @@ return [
         // Features::profilePhotos(),
         // Features::api(),
         Features::teams(['invitations' => false]),
-        Features::accountDeletion(),
+        // Features::accountDeletion(),
     ],
 
     /*

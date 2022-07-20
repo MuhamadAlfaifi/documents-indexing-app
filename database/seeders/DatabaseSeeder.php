@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     { 
+        \Artisan::call('master:install');
         \App\Models\User::factory(5)->create();
         \App\Models\Tag::factory(11)->create();
         \App\Models\Post::factory(838)->create();

@@ -6,8 +6,6 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\SearchController;
 
-require_once __DIR__ . '/jetstream.php';
-
 Route::redirect('/', \App\Providers\RouteServiceProvider::HOME);
 
 Route::middleware([

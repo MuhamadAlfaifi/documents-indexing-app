@@ -53,7 +53,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        return $user->ownsPost($post);
+        return $user->master === 1 || $user->ownsPost($post);
     }
 
     /**
@@ -65,7 +65,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        return $user->ownsPost($post);
+        return $user->master === 1 || $user->ownsPost($post);
     }
 
     /**
