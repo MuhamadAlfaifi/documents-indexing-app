@@ -3,13 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
-use Laravel\Jetstream\Jetstream;
 use App\Actions\Fortify\PasswordValidationRules;
 
 class CreateMaster extends Command implements CreatesNewUsers
@@ -26,7 +24,7 @@ class CreateMaster extends Command implements CreatesNewUsers
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Create master user';
 
     /**
      * Execute the console command.
@@ -35,16 +33,22 @@ class CreateMaster extends Command implements CreatesNewUsers
      */
     public function handle()
     {
+        if (User::exists()) {
+            $this->error('The command was unsuccessful!');
+            $this->warn('users table is not empty.');
+            return 1;
+        }
+
         $input = [
-            'name' => env('MASTER_USERNAME', 'master'),
+            'name' => env('MASTER_NAME', 'Master User'),
             'username' => env('MASTER_USERNAME', 'master'),
-            'email' => env('MASTER_EMAIL', 'master@somewhere.com'),
             'password' => env('MASTER_PASSWORD', 'password'),
         ];
-
+        
         $this->create($input);
         $this->info('The command was successful!');
         $this->line('Info: check .env file for master username and password.');
+        return 0;
     }
 
     /**
@@ -55,35 +59,13 @@ class CreateMaster extends Command implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        DB::transaction(function () use ($input) {
-            return tap(User::forceCreate([
-                'name' => $input['name'],
-                'email' => $input['email'],
-                'email_verified_at' => now(),
-                'remember_token' => \Str::random(10),
-                'password' => Hash::make($input['password']),
-                'master' => 1,
-            ]), function (User $user) {
-                $this->createTeam($user);
-            });
-        });
-    }
-
-    /**
-     * Create master team for the user.
-     *
-     * @param  \App\Models\User  $user
-     * @return void
-     */
-    protected function createTeam(User $user)
-    {
-        $team = Team::forceCreate([
-            'user_id' => $user->id,
-            'name' => "master's team",
-            'personal_team' => true,
+        User::forceCreate([
+            'name' => $input['name'],
+            'username' => $input['username'],
+            'email_verified_at' => now(),
+            'remember_token' => \Str::random(10),
+            'password' => Hash::make($input['password']),
+            'permissions' => 7,
         ]);
-
-        $user->ownedTeams()->save($team);
-        $user->switchTeam($team);
     }
 }

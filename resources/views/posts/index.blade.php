@@ -1,5 +1,5 @@
 <x-app-layout :tags="$tags">
-  <x-slot:pageTitle>الرئيسية</x-slot:pageTitle>
+  <x-slot name="pageTitle">الرئيسية</x-slot>
 
   <!-- Search Filters -->
   <x-search.filters :tags="$tags" :users="$users" />

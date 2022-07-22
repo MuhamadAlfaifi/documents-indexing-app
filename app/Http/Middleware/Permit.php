@@ -6,7 +6,7 @@ use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
 
-class Deny
+class Permit
 {
     /**
      * Handle an incoming request.
@@ -16,12 +16,9 @@ class Deny
      * @param  string|null  ...$pathnames
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, ...$pathnames)
+    public function handle(Request $request, Closure $next, ...$permissions)
     {
-        $isMaster = optional(\Auth::user())->master === 1;
-        $stricted = empty($pathnames) || \Str::startsWith($request->path(), $pathnames);
-
-        if ($stricted && !$isMaster) {
+        if (! in_array(auth()->user()->permissions, $permissions)) {
             return redirect(RouteServiceProvider::HOME);
         }
 

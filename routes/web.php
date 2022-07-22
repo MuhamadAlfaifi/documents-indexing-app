@@ -5,16 +5,14 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\UserController;
 
 Route::redirect('/', \App\Providers\RouteServiceProvider::HOME);
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('tags', TagController::class);
     Route::resource('posts', PostController::class);
+    Route::resource('users', UserController::class);
     Route::post('/media', MediaController::class)->name('media');
     Route::get('/search', SearchController::class)->name('search');
 });
