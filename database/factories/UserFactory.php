@@ -23,8 +23,6 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $master = \App\Models\User::where('permissions', 7)->firstOrFail();
-
         return [
             'name' => $this->faker->name(),
             'username' => $this->faker->unique()->username(),

@@ -53,7 +53,7 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        return $user->permissions === 7 || $user->ownsPost($post);
+        return $user->hasRole('admin') || $user->ownsPost($post);
     }
 
     /**
@@ -65,7 +65,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        return $user->permissions === 7 || $user->ownsPost($post);
+        return $user->hasRole('admin') || $user->ownsPost($post);
     }
 
     /**
@@ -77,7 +77,7 @@ class PostPolicy
      */
     public function restore(User $user, Post $post)
     {
-        //
+        return $user->hasRole('admin') || $user->ownsPost($post);
     }
 
     /**
@@ -89,6 +89,6 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post)
     {
-        //
+        return $user->hasRole('admin') || $user->ownsPost($post);
     }
 }

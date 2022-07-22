@@ -17,7 +17,7 @@ class UserPolicy
      */
     public function viewAny(User $authUser)
     {
-        return $authUser->permissions >= 6;
+        return $authUser->hasRole('admin');
     }
 
     /**
@@ -29,7 +29,7 @@ class UserPolicy
      */
     public function view(User $authUser, User $model)
     {
-        return $authUser->permissions >= 6;
+        return $authUser->hasRole('admin');
     }
 
     /**
@@ -40,7 +40,7 @@ class UserPolicy
      */
     public function create(User $authUser)
     {
-        return $authUser->permissions >= 6;
+        return $authUser->hasRole('admin');
     }
 
     /**
@@ -52,7 +52,7 @@ class UserPolicy
      */
     public function update(User $authUser, User $model)
     {
-        return $authUser->permissions >= 6;
+        return $authUser->hasRole('admin');
     }
 
     /**
@@ -64,7 +64,7 @@ class UserPolicy
      */
     public function delete(User $authUser, User $model)
     {
-        return $authUser->permissions >= 6;
+        return false;
     }
 
     /**
@@ -76,7 +76,7 @@ class UserPolicy
      */
     public function restore(User $authUser, User $model)
     {
-        //
+        return false;
     }
 
     /**
@@ -88,6 +88,6 @@ class UserPolicy
      */
     public function forceDelete(User $authUser, User $model)
     {
-        return $authUser->permissions >= 6;
+        return false;
     }
 }

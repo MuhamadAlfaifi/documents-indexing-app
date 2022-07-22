@@ -8,12 +8,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use \Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use HasRoles;
     use TwoFactorAuthenticatable;
 
     /**
@@ -70,5 +73,18 @@ class User extends Authenticatable
         }
 
         return $this->id == $post->user_id;
+    }
+
+    /**
+     * model query excluding super admin.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRolesNotMaster(Builder $query): Builder
+    {
+        return $query->whereHas('roles', function (Builder $subQuery) {
+            $subQuery->where('name', '!=', 'master');
+        });
     }
 }

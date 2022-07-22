@@ -70,7 +70,7 @@
               تقارير
             </x-nav.nav-item>
           </div>
-          @can('create', App\Models\User::class)
+          @can('viewAny', App\Models\User::class)
             <div class="mt-8">
               <!-- Secondary navigation -->
               <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider"

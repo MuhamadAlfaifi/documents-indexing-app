@@ -2,15 +2,14 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\User;
+use Illuminate\Console\Command;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Laravel\Fortify\Contracts\CreatesNewUsers;
-use App\Actions\Fortify\PasswordValidationRules;
 
-class CreateMaster extends Command implements CreatesNewUsers
+class CreateMaster extends Command
 {
     /**
      * The name and signature of the console command.
@@ -44,28 +43,23 @@ class CreateMaster extends Command implements CreatesNewUsers
             'username' => env('MASTER_USERNAME', 'master'),
             'password' => env('MASTER_PASSWORD', 'password'),
         ];
+
+        DB::Transaction(function () use ($input) {
+            $role = Role::create(['name' => 'master']);
+
+            $user = User::create([
+                'name' => $input['name'],
+                'username' => $input['username'],
+                'email_verified_at' => now(),
+                'remember_token' => \Str::random(10),
+                'password' => Hash::make($input['password']),
+            ]);
+
+            $user->assignRole($role);
+        });
         
-        $this->create($input);
         $this->info('The command was successful!');
         $this->line('Info: check .env file for master username and password.');
         return 0;
-    }
-
-    /**
-     * Create master user.
-     *
-     * @param  array  $input
-     * @return \App\Models\User
-     */
-    public function create(array $input)
-    {
-        User::forceCreate([
-            'name' => $input['name'],
-            'username' => $input['username'],
-            'email_verified_at' => now(),
-            'remember_token' => \Str::random(10),
-            'password' => Hash::make($input['password']),
-            'permissions' => 7,
-        ]);
     }
 }
