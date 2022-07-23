@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'username',
     ];
 
     /**
@@ -73,18 +73,5 @@ class User extends Authenticatable
         }
 
         return $this->id == $post->user_id;
-    }
-
-    /**
-     * model query excluding super admin.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeRolesNotMaster(Builder $query): Builder
-    {
-        return $query->whereHas('roles', function (Builder $subQuery) {
-            $subQuery->where('name', '!=', 'master');
-        });
     }
 }

@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         \Gate::before(function (User $user) {
-            if ($user->hasRole('master')) {
+            if ($user->id === 1) { // master user is always present and has the id of 1
                 return true;
             }
         });

@@ -64,7 +64,7 @@ class UserPolicy
      */
     public function delete(User $authUser, User $model)
     {
-        return false;
+        return $authUser->hasRole('admin') && $authUser->id !== $model->id;
     }
 
     /**
@@ -76,7 +76,7 @@ class UserPolicy
      */
     public function restore(User $authUser, User $model)
     {
-        return false;
+        return $authUser->hasRole('admin') && $authUser->id !== $model->id;
     }
 
     /**
@@ -88,6 +88,6 @@ class UserPolicy
      */
     public function forceDelete(User $authUser, User $model)
     {
-        return false;
+        return $authUser->hasRole('admin') && $authUser->id !== $model->id;
     }
 }

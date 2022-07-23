@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
 use Spatie\PdfToText\Pdf as FileKeywordsSuggestions;
 use App\Services\MediaPath;
+use Spatie\Permission\Models\Role;
 
 class PostController extends Controller
 {
@@ -32,7 +33,7 @@ class PostController extends Controller
     {
         $posts = Post::orderBy(...$request->filterable('sort'))->paginate(10);
         $tags = Tag::all();
-        $users = User::all();
+        $users = User::all()->except(1);
 
         return view('posts.index', compact('posts','tags','users'));
     }
@@ -60,7 +61,11 @@ class PostController extends Controller
             return '';
         }
 
-        return FileKeywordsSuggestions::getText($file);
+        try {
+            return FileKeywordsSuggestions::getText($file);
+        } catch (\Exception $error) {
+            return '';
+        }
     }
 
     /**

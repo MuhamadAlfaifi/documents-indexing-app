@@ -35,7 +35,7 @@ class CreateMaster extends Command
         if (User::exists()) {
             $this->error('The command was unsuccessful!');
             $this->warn('users table is not empty.');
-            return 1;
+            throw new \Exception('create master command error.');
         }
 
         $input = [
@@ -44,19 +44,13 @@ class CreateMaster extends Command
             'password' => env('MASTER_PASSWORD', 'password'),
         ];
 
-        DB::Transaction(function () use ($input) {
-            $role = Role::create(['name' => 'master']);
-
-            $user = User::create([
-                'name' => $input['name'],
-                'username' => $input['username'],
-                'email_verified_at' => now(),
-                'remember_token' => \Str::random(10),
-                'password' => Hash::make($input['password']),
-            ]);
-
-            $user->assignRole($role);
-        });
+        User::create([
+            'name' => $input['name'],
+            'username' => $input['username'],
+            'email_verified_at' => now(),
+            'remember_token' => \Str::random(10),
+            'password' => Hash::make($input['password']),
+        ]);
         
         $this->info('The command was successful!');
         $this->line('Info: check .env file for master username and password.');

@@ -7,7 +7,7 @@
         <x-validation-errors class="my-4 text-center" />
 
         @if (session('status'))
-          <div class="mb-4 font-medium text-sm text-green-600">
+          <div class="my-4 font-medium text-sm text-green-600 text-center">
             {{ session('status') }}
           </div>
         @endif

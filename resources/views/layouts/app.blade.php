@@ -118,41 +118,17 @@
           <div class="flex-1 min-w-0">
             <h1 class="text-lg font-medium leading-6 text-gray-900 sm:truncate">{{ $pageTitle ?? 'default' }}</h1>
           </div>
-          <x-dropdown>
+          <x-dropdown class="w-8 h-8">
             <x-slot name="button">
-              @if ('admin' === 'admin')
-                <div
-                  class="max-w-xs bg-gray-700 p-1.5 text-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-                  id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                  <span class="sr-only">فتح قائمة المستخدم</span>
-                  <svg class="w-5 h-5 rounded-full" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                      d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clip-rule="evenodd"></path>
-                  </svg>
-                </div>
-              @else
-                <div
-                  class="max-w-xs bg-white text-gray-700 flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-                  id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                  <span class="sr-only">فتح قائمة المستخدم</span>
-                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                      clip-rule="evenodd"></path>
-                  </svg>
-                </div>
-              @endif
+              <div class="max-w-xs bg-white text-gray-700 flex items-center text-sm rounded-full" aria-expanded="false" aria-haspopup="true">
+                <span class="sr-only">فتح قائمة المستخدم</span>
+                <x-heroicons.user-circle class="w-8 h-8 text-gray-700 hover:text-black" />
+              </div>
             </x-slot>
             <div class="divide-y divide-gray-100">
               <div class="px-4 py-3" role="none">
                 <p class="text-sm" role="none">تم تسجيل الدخول كـ</p>
-                @if ('admin' === 'admin')
-                  <p class="text-sm font-medium text-gray-900 truncate" role="none">{{ 'حساب الإدارة' }}</p>
-                @else
-                  <p class="text-sm font-medium text-gray-900 truncate" role="none">{{ 'علي سماري' }}</p>
-                @endif
+                <p class="text-sm font-medium text-gray-900 truncate" role="none">{{ auth()->user()->username }}</p>
               </div>
               <div class="py-1" role="none">
                 <form method="POST" action="{{ route('logout') }}" role="none">

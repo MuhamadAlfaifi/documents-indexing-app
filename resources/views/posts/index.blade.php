@@ -41,7 +41,7 @@
                       </a>
                     </div>
                   </td>
-                  <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500">{{ $post->user->name }}</td>
+                  <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500">{{ $post->user->username }}</td>
                   <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500">{{ $post->created_at }}</td>
                   <td class="relative space-x-reverse space-x-3 whitespace-nowrap border-b border-gray-200 py-4 pl-4 pr-3 text-left text-sm font-regular sm:pl-6 lg:pl-8">
                     @can('delete', $post)

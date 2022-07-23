@@ -25,9 +25,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::rolesNotMaster()->get();
+        $roles = Role::all();
+        $users = User::all()->except(1);
 
-        return view('users.index', compact('users'));
+        return view('users.index', compact('users', 'roles'));
     }
 
     /**
@@ -48,7 +49,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'username' => 'required|string|max:10|unique:users',
+            'password' => 'required|string',
+            'role' => 'required|string|exists:roles,name',
+        ]);
+
+        tap(User::create([
+            'username' => $validated['username'],
+            'email_verified_at' => now(),
+            'remember_token' => \Str::random(10),
+            'password' => \Hash::make($validated['password']),
+        ]), fn ($user) => $user->assignRole($validated['role']));
+
+        return redirect()->back();
     }
 
     /**
@@ -82,7 +96,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validated = $request->validate([
+            'enabled' => 'boolean',
+        ]);
+
+        $user->forceFill($validated)->save();
+
+        return redirect()->back();
     }
 
     /**

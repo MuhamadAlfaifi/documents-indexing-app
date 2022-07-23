@@ -16,18 +16,24 @@ class DatabaseSeeder extends Seeder
     { 
         \Artisan::call('master:install');
 
-        \App\Models\User::factory(5)->create();
-        \App\Models\Tag::factory(11)->create();
-        \App\Models\Post::factory(838)->create();
+        \App\Models\User::factory(14)->create();
+        \App\Models\Tag::factory(25)->create();
+        \App\Models\Post::factory(2729)->create();
 
-        $roles = collect(['admin', 'editor']);
+        $roles = collect([
+            ['admin', 'Administrator users can perform any action.'],
+            ['editor', 'Editor users have the ability to read, create, and update.'],
+        ]);
         
-        foreach ($roles as $role) {
-            \Spatie\Permission\Models\Role::create([ 'name' => $role ]);
+        foreach ($roles as [$role, $description]) {
+            \Spatie\Permission\Models\Role::create([ 
+                'name' => $role,
+                'description' => $description,
+            ]);
         }
 
-        foreach (\App\Models\User::doesntHave('roles')->get() as $user) {
-            $user->assignRole($roles->random());
+        foreach (\App\Models\User::all()->except(1) as $user) {
+            $user->assignRole($roles->random()[0]);
         }
     }
 }

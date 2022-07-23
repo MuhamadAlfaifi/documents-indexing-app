@@ -1,11 +1,9 @@
 @props(['alignment' => 'left'])
 
-<div x-data="{ isOpen: false }" class="relative inline-block text-right">
-  <div>
-    <button x-on:click="isOpen = ! isOpen" type="button" id="menu-button" aria-expanded="true" aria-haspopup="true">
-      {{ $button }}
-    </button>
-  </div>
+<div x-data="{ isOpen: false }" {{ $attributes->class('relative inline-block text-right') }}>
+  <button x-on:click="isOpen = ! isOpen" type="button" id="menu-button" aria-expanded="true" aria-haspopup="true">
+    {{ $button }}
+  </button>
 
   <div 
     x-cloak
