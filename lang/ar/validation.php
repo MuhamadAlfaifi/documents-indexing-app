@@ -124,4 +124,9 @@ return [
     'uploaded'             => 'فشل في تحميل الـ :attribute.',
     'url'                  => 'صيغة رابط حقل :attribute غير صحيحة.',
     'uuid'                 => 'حقل :attribute يجب أن يكون بصيغة UUID سليمة.',
+    'attributes' => [
+        'username' => 'اسم المستخدم',
+        'role' => 'الأذونات',
+        'password' => 'كلمة المرور',
+    ],
 ];

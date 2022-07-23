@@ -8,6 +8,7 @@
             <h3 class="text-lg font-medium leading-6 text-gray-900">{{ __('Add Team Member') }}</h3>
             <p class="mt-1 text-sm text-gray-600">
               {{ __('Add a new team member to your team, allowing them to collaborate with you.') }}</p>
+            <x-validation-errors class="mt-6" />
           </div>
         </div>
         <div class="mt-5 md:mt-0 md:col-span-2">
