@@ -77,7 +77,7 @@
                   <x-heroicons.user-circle class="h-10 w-10 rounded-full" />
                   <div class="mr-3">
                     <p class="text-sm font-medium text-gray-900">{{ $user->username }}</p>
-                    <p class="text-sm text-gray-500">{{ $user->created_at->diffForHumans() }}</p>
+                    <p class="text-sm text-gray-500">{{ $user->roles()->get()->map(fn ($x) => __($x->name))->join(', ') }}</p>
                   </div>
                 </div>
                 @if (auth()->user()->id !== $user->id)
