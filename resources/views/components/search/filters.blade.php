@@ -12,14 +12,14 @@
     <form action="{{ route('search') }}" class="relative z-10 bg-white border-b border-gray-200 pb-4">
       <div class="max-w-7xl mx-auto px-4 flex items-center justify-between sm:px-6 lg:px-8">
         <x-dropdown alignment="right">
-          <x-slot:button>
+          <x-slot name="button">
             <div class="flex">
               <div class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" id="menu-button" aria-expanded="false" aria-haspopup="true">
                 فرز
                 <x-heroicons.chevron-down class="flex-shrink-0 -ml-1 mr-1 h-5 w-5 text-gray-400 group-hover:text-gray-500" />
               </div>
             </div>
-          </x-slot:button>
+          </x-slot>
           <x-dropdown.menu>
             @foreach (['created_at' => 'التاريخ', 'title' => 'إسم الملف', 'id' => 'رقم الملف'] as $idx => $field)
               <x-dropdown.menu-item>
@@ -127,7 +127,7 @@
                           <x-heroicons.check class="h-5 w-5" />
                         </span>
                       </x-slot:icon>
-                      {{ $user->name }}
+                      {{ $user->username }}
                     </x-input.menu>
                   </x-dropdown.menu-item>
                   @endforeach
@@ -181,7 +181,7 @@
                 @elseif($key === 'tag')
                   <x-search.active-filter :href="$unfilter">{{ optional($tags->find($value))->name }}</x-search.active-filter>
                 @elseif($key === 'user')
-                  <x-search.active-filter :href="$unfilter">{{ optional($users->find($value))->name }}</x-search.active-filter>
+                  <x-search.active-filter :href="$unfilter">{{ optional($users->find($value))->username }}</x-search.active-filter>
                 @endif
               @endforeach
             </div>
