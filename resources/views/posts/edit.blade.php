@@ -60,7 +60,7 @@
                       @foreach ($tags as $tag)
                       <div class="flex items-center">
                         <input id="tag-{{ $tag->id }}" name="tag_id" type="radio" required value="{{ $tag->id }}"
-                          class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" checked="{{ $post->tag->id === $tag->id }}">
+                          class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" @checked($post->tags->contains(fn ($x) => $x->id === $tag->id))>
                         <label for="tag-{{ $tag->id }}" class="mr-3 block text-sm font-medium text-gray-700">{{ $tag->name }}</label>
                       </div>
                       @endforeach

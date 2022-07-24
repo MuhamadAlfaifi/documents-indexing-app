@@ -19,11 +19,11 @@ class Post extends Model implements HasMedia
      * @var string[]
      */
     protected $fillable = [
-        'title', 'description', 'keywords', 'tag_id', 'user_id'
+        'title', 'description', 'keywords', 'user_id'
     ];
 
-    public function tag() {
-        return $this->belongsTo(Tag::class);
+    public function tags() {
+        return $this->belongsToMany(Tag::class);
     }
 
     public function user() {

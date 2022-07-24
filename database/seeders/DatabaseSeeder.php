@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,25 +16,39 @@ class DatabaseSeeder extends Seeder
     public function run()
     { 
         \Artisan::call('master:install');
-
-        \App\Models\User::factory(14)->create();
-        \App\Models\Tag::factory(25)->create();
-        \App\Models\Post::factory(2729)->create();
-
-        $roles = collect([
+        
+        collect([
             ['admin', 'Administrator users can perform any action.'],
             ['editor', 'Editor users have the ability to read, create, and update.'],
-        ]);
-        
-        foreach ($roles as [$role, $description]) {
+        ])->each(function ($x) {
+            [$role, $description] = $x;
+
             \Spatie\Permission\Models\Role::create([ 
                 'name' => $role,
                 'description' => $description,
             ]);
-        }
+        });
+        \App\Models\User::factory(14)->create();
+        \App\Models\Tag::factory(25)->create();
+        \App\Models\Post::factory()
+                ->count(2738)
+                ->state(new Sequence(
+                    fn ($sequence) => ['user_id' => \App\Models\User::get()->except(1)->shuffle()->random()->id],
+                ))
+                ->create();
 
-        foreach (\App\Models\User::all()->except(1) as $user) {
-            $user->assignRole($roles->random()[0]);
-        }
+        // add roles
+        \App\Models\User::all()->except(1)->each(function ($user) {
+            $role = \Spatie\Permission\Models\Role::all()->shuffle()->random();
+            
+            $user->assignRole($role);
+        });
+
+        // add tags
+        \App\Models\Post::get()->each(function ($post) {
+            $tag = \App\Models\Tag::get()->shuffle()->random();
+
+            $post->tags()->attach($tag->id);
+        });
     }
 }

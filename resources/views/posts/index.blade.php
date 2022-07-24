@@ -32,11 +32,15 @@
                   <td class="whitespace-nowrap border-b border-gray-200 py-4 pr-4 pl-3 text-sm font-medium text-gray-900 sm:pr-6 lg:pr-8">{{ $post->id }}</td>
                   <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm">
                     <div class="flex items-center space-x-reverse space-x-3 pl-2">
-                      <div style="background-color: {{ $post->tag->color }}" class="flex-shrink-0 w-2.5 h-2.5 rounded-full" aria-hidden="true"></div>
+                      @foreach ($post->tags as $tag)  
+                        <div style="background-color: {{ $tag->color }}" class="flex-shrink-0 w-2.5 h-2.5 rounded-full" aria-hidden="true"></div>
+                      @endforeach
                       <a href="{{ route('posts.show', ['post' => $post->id]) }}" class="truncate hover:text-gray-600">
                         <span>
                           {{ $post->title }}
-                          <span class="text-gray-500 font-normal">في {{ $post->tag->name }}</span>
+                          @foreach ($post->tags as $tag)  
+                            <span class="text-gray-500 font-normal">في {{ $tag->name }}</span>
+                          @endforeach
                         </span>
                       </a>
                     </div>

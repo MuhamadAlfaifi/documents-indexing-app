@@ -31,7 +31,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::orderBy(...$request->filterable('sort'))->paginate(10);
+        $posts = Post::with('tags')->orderBy(...$request->filterable('sort'))->paginate(10);
         $tags = Tag::all();
         $users = User::all()->except(1);
 
@@ -55,13 +55,13 @@ class PostController extends Controller
 
     private function getKeywordsSuggestions($file)
     {
-        $parts = pathinfo($file);
-
-        if ($parts['extension'] !== 'pdf') {
-            return '';
-        }
-
         try {
+            $parts = pathinfo($file);
+
+            if ($parts['extension'] !== 'pdf') {
+                return '';
+            }
+
             return FileKeywordsSuggestions::getText($file);
         } catch (\Exception $error) {
             return '';
@@ -85,9 +85,13 @@ class PostController extends Controller
 
         $validated['user_id'] = auth()->user()->id;
         
-        $post = Post::create($validated);
-                
-        $post->addMediaFromDisk(MediaPath::getUploadedFile($request, false), 'local')->toMediaCollection();
+        \DB::transaction(function () use ($validated, $request) {
+            $post = Post::create($validated);
+    
+            $post->tags()->attach($validated['tag_id']);
+                    
+            $post->addMediaFromDisk(MediaPath::getUploadedFile($request, false), 'local')->toMediaCollection();
+        });
 
         return redirect(route('posts.index'));
     }

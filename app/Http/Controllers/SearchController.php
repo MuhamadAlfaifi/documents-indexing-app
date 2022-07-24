@@ -30,14 +30,16 @@ class SearchController extends Controller
     
     private function filterPosts(Request $request)
     {
-        $postsQuery = Post::query()->with('tag')->with('user');
+        $postsQuery = Post::query()->with('tags')->with('user');
 
         if ($request->filled('query')) {
             $postsQuery->where('title', 'like', $request->filterable('query'));
         }
         
         if ($request->filled('tag')) {
-            $postsQuery->whereIn('tag_id', $request->filterable('tag'));
+            $postsQuery->whereBelongsTo('tags', fn ($query) => 
+                $query->whereIn('id', $request->filterable('tag'))
+            );
         }
         
         if ($request->filled('user')) {

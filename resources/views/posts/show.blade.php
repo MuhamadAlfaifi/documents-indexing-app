@@ -22,7 +22,9 @@
         </div>
         <div class="flex space-x-reverse space-x-2">
           <strong>التصنيف: </strong>
-          <p>{{ $post->tag->name }}</p>
+          @foreach ($post->tags as $tag)  
+            <p>{{ $tag->name }}</p>
+          @endforeach
         </div>
         <div class="flex space-x-reverse space-x-2">
           <strong>أضيف من قبل: </strong>

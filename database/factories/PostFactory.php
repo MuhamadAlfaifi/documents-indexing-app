@@ -16,14 +16,9 @@ class PostFactory extends Factory
      */
     public function definition()
     {
-        $user = \App\Models\User::get()->shuffle()->random();
-        $tag = \App\Models\Tag::get()->shuffle()->random();
-
         return [
             'title' => fake()->name(),
             'description' => fake()->paragraph(),
-            'user_id' => $user->id,
-            'tag_id' => $tag->id,
         ];
     }
 }
