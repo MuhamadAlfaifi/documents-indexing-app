@@ -37,8 +37,8 @@ class SearchController extends Controller
         }
         
         if ($request->filled('tag')) {
-            $postsQuery->whereBelongsTo('tags', fn ($query) => 
-                $query->whereIn('id', $request->filterable('tag'))
+            $postsQuery->whereHas('tags', fn ($query) => 
+                $query->whereIn('tag_id', $request->filterable('tag'))
             );
         }
         
