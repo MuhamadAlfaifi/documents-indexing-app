@@ -11,7 +11,7 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['BlinkMacSystemFont'],
+                sans: ['sf-arabic', 'arial', 'sans-serift'],
             },
         },
     },

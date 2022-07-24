@@ -9,6 +9,13 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>{{ config('app.name', 'Laravel') }}</title>
+  <link rel="preload" href="{{ asset('fonts/sf-arabic.ttf') }}" as="font" type="font/truetype" crossorigin="anonymous" />
+  <style>
+    @font-face {
+      font-family: "sf-arabic";
+      src: url("{{ asset('fonts/sf-arabic.ttf') }}");
+    }
+  </style>
 
   <!-- Styles -->
   @livewireStyles
@@ -23,7 +30,7 @@
     <div
       class="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 lg:border-r lg:border-gray-200 lg:pt-5 lg:pb-4 lg:bg-gray-100">
       <a href="/" class="flex items-center flex-shrink-0 px-6">
-        <img class="h-8 w-auto" src="/logo.svg" alt="الأرشيف الإلكتروني">
+        <img class="h-8 w-auto" src="/logo.png" alt="الأرشيف الإلكتروني" />
       </a>
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="mt-6 h-0 flex-1 flex flex-col overflow-y-auto">

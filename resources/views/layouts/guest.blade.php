@@ -6,6 +6,13 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
+        <link rel="preload" href="{{ asset('fonts/sf-arabic.ttf') }}" as="font" type="font/truetype" crossorigin="anonymous" />
+        <style>
+          @font-face {
+            font-family: "sf-arabic";
+            src: url("{{ asset('fonts/sf-arabic.ttf') }}");
+          }
+        </style>
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
