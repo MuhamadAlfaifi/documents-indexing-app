@@ -1,9 +1,10 @@
 <x-app-layout>
-  <x-slot name="header">
+  <x-slot name="pageTitle">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
       {{ __('التصنيفات') }}
     </h2>
   </x-slot>
+  <x-breadcrumbs home="الإدارة" :steps="[[route('tags.index'), 'التصنيفات']]" class="mx-8 mt-6" />
   <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div class="sm:flex sm:items-center">
@@ -23,13 +24,10 @@
               <table class="min-w-full divide-y divide-gray-300">
                 <thead class="bg-gray-50">
                   <tr>
-                    <th scope="col" class="py-3.5 pr-4 pl-3 text-right text-sm font-semibold text-gray-900 sm:pr-6">
-                      رقم</th>
+                    <th scope="col" class="py-3.5 pr-4 pl-3 text-right text-sm font-semibold text-gray-900 sm:pr-6">رقم</th>
                     <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">الإسم</th>
-                    <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">الوصف
-                    </th>
-                    <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">تاريخ الإنشاء
-                    </th>
+                    <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">الوصف</th>
+                    <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">تاريخ الإنشاء</th>
                     <th scope="col" class="relative py-3.5 pr-3 pl-4 sm:pl-6">
                       <span class="sr-only">تعديل</span>
                     </th>
@@ -38,10 +36,13 @@
                 <tbody class="divide-y divide-gray-200 bg-white">
                   @foreach ($tags as $tag)
                     <tr>
-                      <td class="whitespace-nowrap py-4 pr-4 pl-3 text-sm font-medium text-gray-900 sm:pr-6">
-                        {{ $tag->id }}</td>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $tag->name }}</td>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $tag->description }}</td>
+                      <td class="whitespace-nowrap py-4 pr-4 pl-3 text-sm font-medium text-gray-900 sm:pr-6">{{ $tag->id }}</td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <a href="{{ route('tags.show', ['tag' => $tag->id]) }}" class="truncate hover:text-gray-600">
+                          {{ $tag->name }}
+                        </a>
+                      </td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 max-w-xs truncate">{{ $tag->description }}</td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $tag->created_at }}</td>
                       <td class="relative whitespace-nowrap py-4 pr-3 pl-4 text-left text-sm font-medium sm:pl-6 space-x-3 space-x-reverse">
                         <form class="inline" action="{{ route('tags.destroy', $tag->id) }}" method="POST" onsubmit="return confirm('حذف التصنيف؟')">
@@ -50,7 +51,7 @@
                           <button type="submit" class="text-red-600 hover:text-red-900">حذف<span
                               class="sr-only">, {{ $tag->name }}</span></button>
                         </form>
-                        <a href="{{ route('tags.create') }}" class="text-indigo-600 hover:text-indigo-900">تعديل<span
+                        <a href="{{ route('tags.edit', ['tag' => $tag->id]) }}" class="text-indigo-600 hover:text-indigo-900">تعديل<span
                             class="sr-only">, {{ $tag->name }}</span></a>
                       </td>
                     </tr>

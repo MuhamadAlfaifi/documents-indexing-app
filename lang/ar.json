@@ -190,5 +190,10 @@
     "You may not delete your personal team.": "لا يمكنك حذف فريقك الشخصي.",
     "You may not leave a team that you created.": "لا يمكنك مغادرة الفريق الذي أنشأته.",
     "Your email address is unverified.": "لم يتم التحقق من عنوان بريدك الإلكتروني.",
-    "Username": "اسم المستخدم"
+    "Username": "اسم المستخدم",
+    "Posts": "الملفات",
+    "Users": "المستخدمين",
+    "Description": "الوصف",
+    "Update": "تحديث",
+    "Create New Tag": "إنشاء تصنيف جديد"
 }

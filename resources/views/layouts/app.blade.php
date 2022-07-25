@@ -49,7 +49,7 @@
                   جهاز الكومبيوتر
                 </label>
               </form>
-              <x-button>الماسح الضوئي</x-button>
+              <x-button href="#">الماسح الضوئي</x-button>
             </div>
           </div>
         </div>
@@ -87,16 +87,23 @@
               <div class="mt-1 space-y-1" aria-labelledby="management-headline">
                 <x-nav.nav-item href="{{ route('users.index') }}" :isActive="request()->routeIs('users.index')" aria-current="page">
                   <x-slot name="icon">
-                    <x-heroicons.shield-check class="ml-3 flex-shrink-0 h-6 w-6" />
+                    <x-heroicons.shield-check :solid="true" class="ml-3 flex-shrink-0 h-6 w-6" />
                   </x-slot>
                   الصلاحيات والمستخدمين
                 </x-nav.nav-item>
 
                 <x-nav.nav-item href="#" :isActive="false" aria-current="page">
                   <x-slot name="icon">
-                    <x-heroicons.database class="ml-3 flex-shrink-0 h-6 w-6" />
+                    <x-heroicons.database :solid="true" class="ml-3 flex-shrink-0 h-6 w-6" />
                   </x-slot>
                   نسخ إحتياطي
+                </x-nav.nav-item>
+
+                <x-nav.nav-item href="{{ route('tags.index') }}" :isActive="request()->routeIs('tags.index')" aria-current="page">
+                  <x-slot name="icon">
+                    <x-heroicons.tag :solid="true" class="ml-3 flex-shrink-0 h-6 w-6" />
+                  </x-slot>
+                  التصنيفات
                 </x-nav.nav-item>
               </div>
             </div>

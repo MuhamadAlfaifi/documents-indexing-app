@@ -4,23 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use Illuminate\Http\Request;
-
-function handleMutations(Request $request) {
-    $validated = $request->validate([
-        'name' => 'string',
-        'description' => 'string|min:5|nullable',
-    ]);
-
-    $tag = Tag::updateOrCreate(
-        [ 'name' => $validated['name'] ],
-        [ 'description' => $validated['description'] ],
-    );
-
-    return view('tags.show')->withTag($tag);
-}
+use App\Services\Colors;
 
 class TagController extends Controller
 {
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Tag::class, 'tag');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +27,7 @@ class TagController extends Controller
     {
         $tags = Tag::all();
 
-        return view('tags.index')->withTags($tags);
+        return view('tags.index', compact('tags'));
     }
 
     /**
@@ -40,7 +37,10 @@ class TagController extends Controller
      */
     public function create()
     {
-        return view('tags.create');
+        return view('tags.update-or-create', [
+            'action' => route('tags.store'), 
+            'method' => 'POST'
+        ]);
     }
 
     /**
@@ -51,7 +51,21 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        return handleMutations($request);
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'description' => 'string|min:5|nullable',
+        ]);
+    
+        $tag = new Tag;
+        $colors = new Colors;
+
+        $tag->name = $validated['name'];
+        $tag->description = $validated['description'];
+        $tag->color = $colors->load()->getRandomColor();
+        
+        $tag->save();
+    
+        return view('tags.show', compact('tag'));
     }
 
     /**
@@ -62,7 +76,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        return view('tags.show');
+        return view('tags.show', compact('tag'));
     }
 
     /**
@@ -73,7 +87,15 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        return view('tags.edit');
+        session()->flashInput([
+            'name' => $tag->name,
+            'description' => $tag->description,
+        ]);
+
+        return view('tags.update-or-create', [
+            'action' => route('tags.update', ['tag' => $tag->id]), 
+            'method' => 'PUT'
+        ]);
     }
 
     /**
@@ -85,7 +107,16 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        return handleMutations($request);
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'description' => 'string|min:5|nullable',
+        ]);
+    
+        $tag->name = $validated['name'];
+        $tag->description = $validated['description'];
+        $tag->save();
+    
+        return view('tags.show', compact('tag'));
     }
 
     /**
