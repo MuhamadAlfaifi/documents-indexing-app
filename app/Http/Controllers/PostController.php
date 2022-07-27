@@ -136,7 +136,11 @@ class PostController extends Controller
             'keywords' => 'string|nullable',
         ]);
         
-        $post->updateOrFail($validated);
+        \DB::transaction(function () use ($post, $validated) {
+            $post->update($validated);
+
+            $post->tags()->sync([$validated['tag_id']]);
+        });
 
         return redirect(route('posts.index'));
     }
