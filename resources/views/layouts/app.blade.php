@@ -70,7 +70,7 @@
               ملفاتي
             </x-nav.nav-item>
 
-            <x-nav.nav-item href="#" :isActive="false" aria-current="page">
+            <x-nav.nav-item href="{{ route('report.form') }}" :isActive="request()->routeIs('report.form')" aria-current="page">
               <x-slot name="icon">
                 <x-heroicons.download class="ml-3 flex-shrink-0 h-6 w-6" />
               </x-slot>

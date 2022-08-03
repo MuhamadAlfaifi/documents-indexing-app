@@ -13,6 +13,9 @@ module.exports = {
             fontFamily: {
                 sans: ['sf-arabic', 'arial', 'sans-serift'],
             },
+            backgroundPosition: {
+                'caret': 'left 0.5rem center'
+            },
         },
     },
 
