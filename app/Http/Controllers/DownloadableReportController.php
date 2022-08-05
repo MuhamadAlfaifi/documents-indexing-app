@@ -25,9 +25,30 @@ class DownloadableReportController extends Controller
         $min = now()->setMonth($validated['month'])->startOfMonth();
         $max = now()->setMonth($validated['month'])->endOfMonth();
 
-        $posts = Post::whereBetween('created_at', [$min, $max])->get();
+        $posts = Post::with('tags')->with('user')->whereBetween('created_at', [$min, $max])->get();
+        $tags = $posts->flatMap(fn ($i) => $i->tags)->unique(fn ($i) => $i->name);
+        $users = $posts->map(fn ($i) => $i->user)->unique(fn ($i) => $i->username);
 
-        dd($posts);
+        $count = [
+            'posts' => $posts->count(),
+            'tags' => $tags->count(),
+            'users' => $users->count(),
+        ];
+
+        $performance = [];
+        
+        foreach ($users as $user) {
+            $userPosts = $posts->filter(fn ($i) => $i->user->username === $user->username);
+
+            $performance[] = [
+                'username' => $user->username,
+                'additions' => $userPosts->count(),
+                'tags' => $userPosts->flatMap(fn ($i) => $i->tags)->groupBy(fn ($i) => $i->id)->map(fn ($v, $k) => [
+                    'tag' => $tags->first(fn ($i) => $i->id === $k)->name,
+                    'additions' => $v->count(),
+                ])->toArray(),
+            ];
+        }
 
         $filename = 'example_018.pdf';
         $dest = !array_key_exists('inline', $validated) ? 'D' : 'I';
@@ -51,7 +72,7 @@ class DownloadableReportController extends Controller
         $pdf->AddPage();
 
         // Arabic and English content
-        $htmlcontent = \View::make('reports.simple')->render();
+        $htmlcontent = \View::make('reports.simple', compact('performance', 'count', 'posts', 'users', 'tags'))->render();
         $pdf->WriteHTML($htmlcontent, true, 0, true, 0);
 
         //Close and output PDF document

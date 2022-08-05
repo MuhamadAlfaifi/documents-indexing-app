@@ -1,62 +1,43 @@
 @php
-  $data0 = [
-    [ 'th' => 'الملفات المدرجة', 'td' => join(' ', ['8', 'ملفات تم إدراجها في', '5', 'تصنيفات']) ],
-    [ 'th' => 'المستخدمين', 'td' => join(' ،', ['al_hakami', 'al_abdili', 'ali_alharbi']) ],
-    [ 'th' => 'التصنيفات', 'td' => join('، ', ['دحيقة', 'جازان', 'باعشن']) ],
+  $summary = [
+    [ 'th' => 'الملفات المدرجة', 'td' => join(' ', [$count['posts'], 'ملفات تم إدراجها في', $count['tags'], 'تصنيفات']) ],
+    [ 'th' => 'المستخدمين', 'td' => join(' ،', $users->map(fn ($i) => $i->username)->toArray()) ],
+    [ 'th' => 'التصنيفات', 'td' => join('، ', $tags->map(fn ($i) => $i->name)->toArray()) ],
   ];
-  $data1cols = [
+  $performanceCols = [
     __('Username'), 
     __('Added Posts'), 
     __('Tags')
   ];
-  $data1rows = [
-    [ 
-      'username' => 'al_hakami', 
-      'additions' => 5, 
-      'tags' => [
-        [
-          'tag' => 'جازان',
-          'additions' => 3,
-        ],
-        [
-          'tag' => 'دحيقة',
-          'additions' => 2,
-        ],
-      ], 
-    ],
-    [ 
-      'username' => 'al_abdili', 
-      'additions' => 2, 
-      'tags' => [
-        [
-          'tag' => 'باعشن',
-          'additions' => 1,
-        ],
-      ], 
-    ],
-    [ 
-      'username' => 'ali_alharbi', 
-      'additions' => 1, 
-      'tags' => [
-        [
-          'tag' => 'دحيقة',
-          'additions' => 1,
-        ],
-      ], 
-    ],
+  $performanceRows = $performance;
+  
+  $months = [
+    0 => '',
+    1 => 'يناير',
+    2 => 'فبراير',
+    3 => 'مارس',
+    4 => 'أبريل',
+    5 => 'مايو',
+    6 => 'يونيو',
+    7 => 'يوليو',
+    8 => 'أغسطس',
+    9 => 'سبتمبر',
+    10 => 'أكتوبر',
+    11 => 'نوفمبر',
+    12 => 'ديسمبر',
   ];
 @endphp
 
 <div role="heading" style="font-size: 1.3cm">تقرير الأرشيف</div>
-<span style="font-size: .5cm">{{ join(' ', ['بواسطة: المشرف', '  al_hakami  ', 'في يوم', now()->diffForHumans()]) }}</span>
+<span style="font-size: .5cm">{{ join(' ', ['بواسطة:', auth()->user()->roleName(), auth()->user()->username, 'في يوم', now()->isoFormat('dddd، Do MMMM YYYY، hh:mm')]) }}</span>
 <br />
-<h2>الأرشيف الإلكتروني لشهر (محرم) 1444 هـ</h2>
+<h2>الأرشيف الإلكتروني لشهر ({{ $months[request()->query('month')] }}) {{ now()->year }}</h2>
 
 <hr />
 <h3 style="font-size: .5cm">{{ __('Operations Summary') }}</h3>
 <table>
-  @foreach ($data0 as $idx => $row)
-    <tr>
+  @foreach ($summary as $idx => $row)
+    <tr style="border: 1px solid blue">
       <th bgcolor="#9fc4e7" align="left" style="width: 20%;">&nbsp;&nbsp;{{ $row['th'] }}&nbsp;&nbsp;</th>
       <td style="">&nbsp;&nbsp;{{ $row['td'] }}&nbsp;&nbsp;</td>
     </tr>
@@ -68,13 +49,13 @@
 <table>
   <thead>
     <tr>
-      @foreach ($data1cols as $column)      
+      @foreach ($performanceCols as $column)      
         <th bgcolor="#9fc4e7">{{ $column }}</th>
       @endforeach
     </tr>
   </thead>
   <tbody>
-    @foreach ($data1rows as $row)
+    @foreach ($performanceRows as $row)
       <tr>
         <td>{{ $row['username'] }}</td>
         <td>{{ $row['additions'] }}</td>

@@ -74,4 +74,17 @@ class User extends Authenticatable
 
         return $this->id == $post->user_id;
     }
+
+    public function roleName()
+    {
+        $roles = $this->getRoleNames();
+
+        if ($roles->contains(fn ($i) => $i === 'admin')) {
+            return __('admin');
+        } else if ($roles->contains(fn ($i) => $i === 'editor')) {
+            return __('editor');
+        }
+
+        return '';
+    }
 }

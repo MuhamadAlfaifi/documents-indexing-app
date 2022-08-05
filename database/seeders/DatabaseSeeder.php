@@ -28,10 +28,10 @@ class DatabaseSeeder extends Seeder
                 'description' => $description,
             ]);
         });
-        \App\Models\User::factory(14)->create();
-        \App\Models\Tag::factory(25)->create();
+        \App\Models\User::factory(7)->create();
+        \App\Models\Tag::factory(6)->create();
         \App\Models\Post::factory()
-                ->count(2738)
+                ->count(84)
                 ->state(new Sequence(
                     fn ($sequence) => ['user_id' => \App\Models\User::get()->except(1)->shuffle()->random()->id],
                 ))

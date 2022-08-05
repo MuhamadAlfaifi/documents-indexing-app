@@ -1,3 +1,21 @@
+@php
+  $months = [
+    0 => '',
+    1 => 'يناير',
+    2 => 'فبراير',
+    3 => 'مارس',
+    4 => 'أبريل',
+    5 => 'مايو',
+    6 => 'يونيو',
+    7 => 'يوليو',
+    8 => 'أغسطس',
+    9 => 'سبتمبر',
+    10 => 'أكتوبر',
+    11 => 'نوفمبر',
+    12 => 'ديسمبر',
+  ];
+@endphp
+
 <x-app-layout>
   <x-slot name="pageTitle">
     إنشاء تقرير
@@ -7,8 +25,8 @@
       <label for="month" class="block text-sm font-medium text-gray-700">اختر الشهر</label>
       <select id="month" name="month"
         class="mt-1 block w-full pr-3 pl-10 py-2 text-base bg-caret border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-        @foreach ([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as $month)
-          <option value="{{ $month }}">{{ $month }}</option>
+        @foreach ($months as $key => $month)
+          <option value="{{ $key }}">{{ $month }}</option>
         @endforeach
       </select>
     </div>
