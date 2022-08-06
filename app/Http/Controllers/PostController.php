@@ -85,15 +85,13 @@ class PostController extends Controller
 
         $validated['user_id'] = auth()->user()->id;
         
-        \DB::transaction(function () use ($validated, $request) {
-            $post = Post::create($validated);
-    
-            $post->tags()->attach($validated['tag_id']);
-                    
-            $post->addMediaFromDisk(MediaPath::getUploadedFile($request, false), 'local')->toMediaCollection();
-        });
+        $post = Post::create($validated);
 
-        return redirect(route('posts.index'));
+        $post->tags()->attach($validated['tag_id']);
+                
+        $post->addMediaFromDisk(MediaPath::getUploadedFile($request, false), 'local')->toMediaCollection();
+
+        return redirect(route('posts.show', ['post' => $post->id]));
     }
 
     /**
@@ -104,7 +102,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show', compact('post'));
+        $tags = Tag::all();
+
+        return view('posts.show', compact('post', 'tags'));
     }
 
     /**

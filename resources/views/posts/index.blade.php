@@ -48,22 +48,10 @@
                   <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500">{{ $post->user->username }}</td>
                   <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500">{{ $post->created_at }}</td>
                   <td class="relative space-x-reverse space-x-3 whitespace-nowrap border-b border-gray-200 py-4 pl-4 pr-3 text-left text-sm font-regular sm:pl-6 lg:pl-8">
-                    @can('delete', $post)
-                      <form class="inline" action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST" onsubmit="return confirm('حذف الملف؟')">
-                        @csrf()
-                        @method('delete')
-                        <button type="submit" class="text-red-600 hover:text-red-900">حذف<span
-                            class="sr-only">, {{ $post->title }}</span></button>
-                      </form>
-                    @endcan
-                    @can('update', $post)
-                      <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="text-indigo-600 hover:text-indigo-900">تعديل<span class="sr-only">, {{ $post->title }}</span></a>
-                    @endcan
+                    
                   </td>
                 </tr>
                 @endforeach
-  
-                <!-- More people... -->
               </tbody>
             </table>
           </div>

@@ -14,6 +14,7 @@
     @font-face {
       font-family: "sf-arabic";
       src: url("{{ asset('fonts/sf-arabic.ttf') }}");
+      font-display: block;
     }
   </style>
 
@@ -109,6 +110,7 @@
             </div>
           @endcan
 
+          @if(count($tags))
           <div class="mt-8">
             <!-- Secondary navigation -->
             <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider" id="desktop-tags-headline">
@@ -121,6 +123,7 @@
               @endforeach
             </div>
           </div>
+          @endif
         </nav>
       </div>
     </div>

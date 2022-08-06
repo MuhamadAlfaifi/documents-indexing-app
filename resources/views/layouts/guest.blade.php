@@ -11,6 +11,7 @@
           @font-face {
             font-family: "sf-arabic";
             src: url("{{ asset('fonts/sf-arabic.ttf') }}");
+            font-display: block;
           }
         </style>
 

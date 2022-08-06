@@ -50,7 +50,7 @@ class DownloadableReportController extends Controller
             ];
         }
 
-        $filename = 'example_018.pdf';
+        $filename = now()->format(\DateTime::ISO8601) . '.pdf';
         $dest = !array_key_exists('inline', $validated) ? 'D' : 'I';
 
         $pdf = app('tcpdf');

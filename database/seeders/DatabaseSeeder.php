@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         
         collect([
             ['admin', 'Administrator users can perform any action.'],
-            ['editor', 'Editor users have the ability to read, create, and update.'],
+            ['editor', 'Editor users have the ability to read, create.'],
         ])->each(function ($x) {
             [$role, $description] = $x;
 
