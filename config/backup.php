@@ -3,6 +3,9 @@
 use Illuminate\Support\Str;
 
 return [
+    'extra' => [
+        'dirname' => 'public',
+    ],
 
     'backup' => [
 

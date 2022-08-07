@@ -50,7 +50,7 @@
                   جهاز الكومبيوتر
                 </label>
               </form>
-              <x-button href="#">الماسح الضوئي</x-button>
+              <x-button href="#" class="opacity-50">الماسح الضوئي</x-button>
             </div>
           </div>
         </div>
