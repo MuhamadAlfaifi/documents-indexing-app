@@ -25,6 +25,6 @@ class CreateBackupController extends Controller
             session()->flash('success', 'تم أخذ نسخة إحتياطية بنجاح.');
         }
 
-        return back();
+        return redirect(route('backups.index'));
     }
 }
