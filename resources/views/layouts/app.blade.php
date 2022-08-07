@@ -93,7 +93,7 @@
                   الصلاحيات والمستخدمين
                 </x-nav.nav-item>
 
-                <x-nav.nav-item href="#" :isActive="false" aria-current="page">
+                <x-nav.nav-item href="{{ route('backups.index') }}" :isActive="request()->routeIs('backups.index')" aria-current="page">
                   <x-slot name="icon">
                     <x-heroicons.database :solid="true" class="ml-3 flex-shrink-0 h-6 w-6" />
                   </x-slot>
@@ -157,6 +157,18 @@
             </div>
           </x-dropdown>
         </div>
+
+        @if(session()->has('error'))
+          <div class="p-8">
+            <x-alert.error>{{ session()->get('error') }}</x-alert.error>
+          </div>
+        @endif
+
+        @if(session()->has('success'))
+          <div class="p-8">
+            <x-alert.success>{{ session()->get('success') }}</x-alert.success>
+          </div>
+        @endif
 
         {{ $slot }}
       </main>
