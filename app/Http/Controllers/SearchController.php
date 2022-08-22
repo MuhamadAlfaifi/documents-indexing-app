@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Services\SearchTools;
+use Illuminate\Pipeline\Pipeline;
 
 class SearchController extends Controller
 {
@@ -30,30 +31,19 @@ class SearchController extends Controller
     
     private function filterPosts(Request $request)
     {
-        $postsQuery = Post::query()->with('tags')->with('user');
+        $builder = Post::query()->with('tags')->with('user');
 
-        if ($request->filled('query')) {
-            $postsQuery->where('title', 'like', $request->filterable('query'));
-        }
+        $results = app(Pipeline::class)
+            ->send($builder)
+            ->through([
+                \App\Filters\Query::class,
+                \App\Filters\Tag::class,
+                \App\Filters\User::class,
+                \App\Filters\Date::class,
+                \App\Filters\Sort::class,
+            ])
+            ->thenReturn();
         
-        if ($request->filled('tag')) {
-            $postsQuery->whereHas('tags', fn ($query) => 
-                $query->whereIn('tag_id', $request->filterable('tag'))
-            );
-        }
-        
-        if ($request->filled('user')) {
-            $postsQuery->whereIn('user_id', $request->filterable('user'));
-        }
-        
-        if ($request->filled('from')) {
-            $postsQuery->where('created_at', '>=', $request->filterable('from'));
-        }
-        
-        if ($request->filled('to')) {
-            $postsQuery->where('created_at', '=<', $request->filterable('to'));
-        }
-        
-        return $postsQuery->orderBy(...$request->filterable('sort'))->paginate(10)->appends($request->query());
+        return $results->paginate(10)->appends($request->query());
     }
 }
