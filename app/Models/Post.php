@@ -19,7 +19,7 @@ class Post extends Model implements HasMedia
      * @var string[]
      */
     protected $fillable = [
-        'title', 'description', 'keywords', 'user_id', 'hijri',
+        'title', 'topic', 'keywords', 'user_id', 'hijri',
     ];
 
     protected $casts = [

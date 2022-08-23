@@ -17,7 +17,7 @@
               <p class="text-sm font-medium text-gray-500">لا يوجد.</p>
             @endif
             <div class="flex text-sm font-medium">
-              <a href="{{ route('backups.create') }}" class="text-indigo-600 hover:text-indigo-500">أخذ نسخة أحتياطية</a>
+              <a href="{{ route('backups.create') }}" class="text-indigo-600 hover:text-indigo-500">إنشاء نسخة أحتياطية</a>
             </div>
           </div>
         </div>

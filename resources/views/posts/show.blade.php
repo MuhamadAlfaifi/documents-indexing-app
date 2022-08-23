@@ -12,11 +12,22 @@
           <dl class="sm:divide-y sm:divide-gray-200">
             <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">رقم الملف</dt>
-              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $post->id }}</dd>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $post->no }}</dd>
             </div>
             <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">العنوان</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $post->title }}</dd>
+            </div>
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">الموضوع</dt>
+              <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <span class="flex-grow">{{ $post->topic }}</span>
+                <span class="ml-4 flex-shrink-0">
+                  @can('update', $post)
+                    <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">تعديل</a>
+                  @endcan
+                </span>
+              </dd>
             </div>
             <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">التصنيف</dt>
@@ -39,17 +50,6 @@
               <dt class="text-sm font-medium text-gray-500">الكلمات المفتاحية</dt>
               <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                 <span class="flex-grow">{{ $post->keywords }}</span>
-                <span class="ml-4 flex-shrink-0">
-                  @can('update', $post)
-                    <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">تعديل</a>
-                  @endcan
-                </span>
-              </dd>
-            </div>
-            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt class="text-sm font-medium text-gray-500">الوصف</dt>
-              <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <span class="flex-grow">{{ $post->description }}</span>
                 <span class="ml-4 flex-shrink-0">
                   @can('update', $post)
                     <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">تعديل</a>

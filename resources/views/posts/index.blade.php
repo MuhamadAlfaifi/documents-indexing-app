@@ -20,7 +20,7 @@
                   <th scope="col" class="border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pr-4 pl-3 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pr-6 lg:pr-8">رقم الملف</th>
                   <th scope="col" class="border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter">اسم الملف</th>
                   <th scope="col" class="border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter">المستخدم</th>
-                  <th scope="col" class="border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter">تاريخ الإضافة</th>
+                  <th scope="col" class="border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-right text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter">تاريخ</th>
                   <th scope="col" class="border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pl-4 pr-3 backdrop-blur backdrop-filter sm:pl-6 lg:pl-8">
                     <span class="sr-only">تعديل</span>
                   </th>
@@ -29,7 +29,7 @@
               <tbody class="bg-white">
                 @foreach ($posts as $post)
                 <tr>
-                  <td class="whitespace-nowrap border-b border-gray-200 py-4 pr-4 pl-3 text-sm font-medium text-gray-900 sm:pr-6 lg:pr-8">{{ $post->id }}</td>
+                  <td class="whitespace-nowrap border-b border-gray-200 py-4 pr-4 pl-3 text-sm font-medium text-gray-900 sm:pr-6 lg:pr-8">{{ $post->no }}</td>
                   <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm">
                     <div class="flex items-center space-x-reverse space-x-3 pl-2">
                       @foreach ($post->tags as $tag)  
@@ -46,7 +46,7 @@
                     </div>
                   </td>
                   <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500">{{ $post->user->username }}</td>
-                  <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500">{{ $post->created_at }}</td>
+                  <td class="whitespace-nowrap border-b border-gray-200 px-3 py-4 text-sm text-gray-500">{{ join(' / ', $post->hijri) }}</td>
                   <td class="relative space-x-reverse space-x-3 whitespace-nowrap border-b border-gray-200 py-4 pl-4 pr-3 text-left text-sm font-regular sm:pl-6 lg:pl-8">
                     
                   </td>
