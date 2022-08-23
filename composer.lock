@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6cf8f60681484a702640a8b694ace7da",
+    "content-hash": "5292fb65d4731147e12fc9218d30fb49",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2732,6 +2732,56 @@
                 "source": "https://github.com/paragonie/constant_time_encoding"
             },
             "time": "2022-06-14T06:56:20+00:00"
+        },
+        {
+            "name": "pharaonic/php-hijri",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Pharaonic/php-hijri.git",
+                "reference": "ae1699afcbd796b86cab4e4f2e6f328cc256c819"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Pharaonic/php-hijri/zipball/ae1699afcbd796b86cab4e4f2e6f328cc256c819",
+                "reference": "ae1699afcbd796b86cab4e4f2e6f328cc256c819",
+                "shasum": ""
+            },
+            "require": {
+                "nesbot/carbon": ">=1.29.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Pharaonic\\Hijri\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moamen Eltouny",
+                    "email": "support@raggitech.com"
+                }
+            ],
+            "description": "PHP - Hijri DateTime (Islamic).",
+            "keywords": [
+                "hijri",
+                "islamic",
+                "php hijri",
+                "php islamic"
+            ],
+            "support": {
+                "issues": "https://github.com/Pharaonic/php-hijri/issues",
+                "source": "https://github.com/Pharaonic/php-hijri/tree/1.0.2"
+            },
+            "time": "2022-02-14T10:33:05+00:00"
         },
         {
             "name": "phpoption/phpoption",

@@ -1,8 +1,14 @@
 <x-app-layout :tags="$tags">
   <x-slot name="pageTitle">الرئيسية</x-slot>
 
-  <!-- Search Filters -->
-  <x-search.filters :tags="$tags" :users="$users" />
+  <div class="bg-white">
+    <div class="text-center py-16 px-4 sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">{{ __(request()->routeIs('posts.index') ? 'Year Posts' : 'Posts') }}</h1>
+    </div>
+    
+    <!-- Search Filters -->
+    <x-search.filters :tags="$tags" :users="$users" />
+  </div>
   
   <div class="px-8 my-4">
     {{ $posts->links() }}

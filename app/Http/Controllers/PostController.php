@@ -10,6 +10,7 @@ use App\Http\Requests\CreatePostRequest;
 use Spatie\PdfToText\Pdf as FileKeywordsSuggestions;
 use App\Services\MediaPath;
 use Spatie\Permission\Models\Role;
+use Carbon\Carbon;
 
 class PostController extends Controller
 {
@@ -31,7 +32,9 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = Post::with('tags')->orderBy(...$request->filterable('sort'))->paginate(10);
+        $currentHijriYear = (int) Carbon::now()->toHijri()->format('Y');
+
+        $posts = Post::with('tags')->where('hijri_year', '=', $currentHijriYear)->orderBy(...$request->filterable('sort'))->paginate(10);
         $tags = Tag::all();
         $users = User::all()->except(1);
 

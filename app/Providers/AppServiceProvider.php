@@ -2,10 +2,15 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\SearchTools;
+use Pharaonic\Hijri\HijriCarbon;
+use \Illuminate\Support\Stringable;
+use \Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use \Illuminate\Support\Facades\Request as RequestFacade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,10 +32,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(125);
+        
         $this->app->singleton(SearchTools::class);
 
         // flattens query string parameters into a list of [kev,val] pairs
-        \Illuminate\Support\Collection::macro('pairs', function () {
+        Collection::macro('pairs', function () {
             return $this->flatMap(function ($value, $key) {
                 if (is_array($value)) {
                     return array_map(fn ($item) => [$key, $item], $value);
@@ -40,17 +46,17 @@ class AppServiceProvider extends ServiceProvider
             });
         });
 
-        \Illuminate\Support\Facades\Request::macro('tools', function () {
+        RequestFacade::macro('tools', function () {
             return app(SearchTools::class);
         });
 
-        \Illuminate\Support\Facades\Request::macro('filterable', function ($key = null) {
+        RequestFacade::macro('filterable', function ($key = null) {
             if (in_array($key, SearchTools::NAMES)) {
                 return app(SearchTools::class)->{$key}();
             }
         });
         
-        \Illuminate\Support\Facades\Request::macro('filters', function () {
+        RequestFacade::macro('filters', function () {
             return collect($this->only(SearchTools::NAMES))
                 ->filter(fn ($param) => filled($param))
                 ->pairs()
@@ -62,16 +68,18 @@ class AppServiceProvider extends ServiceProvider
                 ->toArray();
         });
         
-        \Illuminate\Support\Facades\Request::macro('blank', function () {
+        RequestFacade::macro('blank', function () {
             return collect($this->only(SearchTools::NAMES))->flatten()->every(fn ($param) => blank($param));
         });
 
-        \Illuminate\Support\Stringable::macro('if', function (bool $boolean) {
+        Stringable::macro('if', function (bool $boolean) {
             if ($boolean) {
                 return $this->value;
             }
             
             return '';
         });
+        
+        Carbon::mixin(HijriCarbon::class); 
     }
 }
