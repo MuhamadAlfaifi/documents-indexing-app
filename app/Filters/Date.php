@@ -2,8 +2,6 @@
 
 namespace App\Filters;
 
-use Closure;
-
 class Date extends Filter
 {
     public function apply($builder)

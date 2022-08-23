@@ -2,8 +2,6 @@
 
 namespace App\Filters;
 
-use Closure;
-
 class Tag extends Filter
 {
     public function apply($builder)

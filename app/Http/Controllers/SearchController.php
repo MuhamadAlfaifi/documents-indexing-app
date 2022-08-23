@@ -22,28 +22,27 @@ class SearchController extends Controller
             return to_route('posts.index');
         }
 
-        $posts = $this->filterPosts($request);
+        $posts = $this->applyFilters()->paginate(10)->appends($request->query());
         $tags = \App\Models\Tag::all();
         $users = \App\Models\User::all();
 
         return view('posts.index', compact('posts', 'users', 'tags'));
     }
     
-    private function filterPosts(Request $request)
+    private function applyFilters()
     {
         $builder = Post::query()->with('tags')->with('user');
 
-        $results = app(Pipeline::class)
+        return app(Pipeline::class)
             ->send($builder)
             ->through([
                 \App\Filters\Query::class,
                 \App\Filters\Tag::class,
                 \App\Filters\User::class,
                 \App\Filters\Date::class,
+                \App\Filters\Hijri::class,
                 \App\Filters\Sort::class,
             ])
             ->thenReturn();
-        
-        return $results->paginate(10)->appends($request->query());
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Filters;
 
-use Closure;
-
 class User extends Filter
 {
     public function apply($builder)
