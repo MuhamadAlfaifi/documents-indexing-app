@@ -2,7 +2,7 @@
 
 <div class="bg-white">
   <div class="text-center py-16 px-4 sm:px-6 lg:px-8">
-    <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">الملفات</h1>
+    <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">{{ __('Posts') }}</h1>
   </div>
 
   <!-- Filters -->
@@ -21,7 +21,7 @@
             </div>
           </x-slot>
           <x-dropdown.menu>
-            @foreach (['title' => 'إسم الملف', 'no' => 'رقم الملف'] as $idx => $field)
+            @foreach (['title' => 'إسم المستند', 'no' => 'رقم المستند'] as $idx => $field)
               <x-dropdown.menu-item>
                 <x-input.menu 
                   :checked="request()->query('sort', 'created_at,desc') === join(',', ([$idx,'desc']))" 
@@ -59,7 +59,7 @@
                   <x-heroicons.search class="w-4 h-4 text-gray-400 hover:text-gray-600" />
                 </x-slot:button>
                 <div class="h-6">
-                  <x-input.search />
+                  <x-input.search class="w-52" />
                 </div>
               </x-reveal>
             </div>

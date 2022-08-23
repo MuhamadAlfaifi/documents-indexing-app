@@ -1,6 +1,6 @@
 @php
   $summary = [
-    [ 'th' => 'الملفات المدرجة', 'td' => join(' ', [$count['posts'], 'ملفات تم إدراجها في', $count['tags'], 'تصنيفات']) ],
+    [ 'th' => 'المستندات المدرجة', 'td' => join(' ', [$count['posts'], 'ملفات تم إدراجها في', $count['tags'], 'تصنيفات']) ],
     [ 'th' => 'المستخدمين', 'td' => join(' ،', $users->map(fn ($i) => $i->username)->toArray()) ],
     [ 'th' => 'التصنيفات', 'td' => join('، ', $tags->map(fn ($i) => $i->name)->toArray()) ],
   ];
