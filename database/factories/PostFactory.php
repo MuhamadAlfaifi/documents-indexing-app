@@ -19,6 +19,9 @@ class PostFactory extends Factory
         return [
             'title' => fake()->name(),
             'description' => fake()->paragraph(),
+            'hijri_day' => fake()->numberBetween(10, 30),
+            'hijri_month' => fake()->numberBetween(1, 12),
+            'hijri_year' => fake()->numberBetween(1430, 1444),
         ];
     }
 }

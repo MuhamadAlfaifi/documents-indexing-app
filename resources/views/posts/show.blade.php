@@ -32,8 +32,8 @@
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $post->user->username }}</dd>
             </div>
             <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt class="text-sm font-medium text-gray-500">تاريخ الإضافة</dt>
-              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $post->created_at }}</dd>
+              <dt class="text-sm font-medium text-gray-500">التاريخ</dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ join(' / ', $post->hijri) }}</dd>
             </div>
             <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">الكلمات المفتاحية</dt>

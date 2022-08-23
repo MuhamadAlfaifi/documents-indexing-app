@@ -81,7 +81,12 @@ class PostController extends Controller
             'tag_id' => 'required|integer|exists:App\Models\Tag,id',
             'description' => 'string|nullable',
             'keywords' => 'string|nullable',
+            'hijri' => 'array|required',
+            'hijri.0' => 'required|numeric|digits_between:1,2|max:31|min:0',
+            'hijri.1' => 'required|numeric|digits_between:1,2|max:12|min:0',
+            'hijri.2' => 'required|numeric|digits:4',
         ]);
+        // dd($request->only('hijri'));
 
         $validated['user_id'] = auth()->user()->id;
         

@@ -158,6 +158,8 @@
           </x-dropdown>
         </div>
 
+        <x-validation-errors class="p-8" />
+
         @if(session()->has('error'))
           <div class="p-8">
             <x-alert.error>{{ session()->get('error') }}</x-alert.error>

@@ -16,7 +16,7 @@
             <label for="title" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> عنوان
             </label>
             <div class="mt-1 sm:mt-0 sm:col-span-2">
-              <input id="title" name="title" type="text" autocomplete="title" required
+              <input id="title" name="title" type="text" autocomplete="title" value="{{ old('title') }}" required
                 class="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md">
             </div>
           </div>
@@ -25,7 +25,7 @@
             <label for="description" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> الوصف </label>
             <div class="mt-1 sm:mt-0 sm:col-span-2">
               <textarea id="description" name="description" rows="3"
-                class="max-w-lg shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md"></textarea>
+                class="max-w-lg shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md">{{ old('description') }}</textarea>
               <p class="mt-2 text-sm text-gray-500">(اختياري)</p>
             </div>
           </div>
@@ -34,8 +34,39 @@
             <label for="keywords" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> كلمات مفتاحية </label>
             <div class="mt-1 sm:mt-0 sm:col-span-2">
               <textarea id="keywords" name="keywords" rows="3"
-                class="max-w-lg shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md">{{ $suggestedKeywords }}</textarea>
+                class="max-w-lg shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md">{{ old('keywords') ?? $suggestedKeywords }}</textarea>
               <p class="mt-2 text-sm text-gray-500">(اختياري)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <div class="mt-8">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">التاريخ</h3>
+          <p class="mt-1 max-w-2xl text-sm text-gray-500">نوع التاريخ هجري.</p>
+        </div>
+
+        <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6 max-w-xs">
+  
+          <div class="sm:col-span-2">
+            <label for="hijri-day" class="block text-sm font-medium text-gray-700"> اليوم </label>
+            <div class="mt-1">
+              <input type="number" name="hijri[]" id="hijri-day" min="0" value="{{ optional(old('hijri'))[0] }}" required class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+            </div>
+          </div>
+  
+          <div class="sm:col-span-2">
+            <label for="hijri-month" class="block text-sm font-medium text-gray-700"> الشهر </label>
+            <div class="mt-1">
+              <input type="number" name="hijri[]" id="hijri-month" min="0" value="{{ optional(old('hijri'))[1] }}" required class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+            </div>
+          </div>
+  
+          <div class="sm:col-span-2">
+            <label for="hijri-year" class="block text-sm font-medium text-gray-700"> السنة </label>
+            <div class="mt-1">
+              <input type="number" name="hijri[]" id="hijri-year" min="0" value="{{ optional(old('hijri'))[2] ?? 1440 }}" required class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
             </div>
           </div>
         </div>
@@ -59,7 +90,7 @@
                     <div class="mt-4 space-y-4">
                       @foreach ($tags as $tag)
                       <div class="flex items-center">
-                        <input id="tag-{{ $tag->id }}" name="tag_id" type="radio" required value="{{ $tag->id }}"
+                        <input id="tag-{{ $tag->id }}" name="tag_id" type="radio" required @checked(old('tag_id') == $tag->id) value="{{ $tag->id }}"
                           class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
                         <label for="tag-{{ $tag->id }}" class="mr-3 block text-sm font-medium text-gray-700">{{ $tag->name }}</label>
                       </div>

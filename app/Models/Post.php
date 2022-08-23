@@ -19,7 +19,11 @@ class Post extends Model implements HasMedia
      * @var string[]
      */
     protected $fillable = [
-        'title', 'description', 'keywords', 'user_id'
+        'title', 'description', 'keywords', 'user_id', 'hijri',
+    ];
+
+    protected $casts = [
+        'hijri' => \App\Casts\Hijri::class,
     ];
 
     public function tags() {
