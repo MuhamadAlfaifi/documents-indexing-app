@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(7)->create();
         \App\Models\Tag::factory(6)->create();
         \App\Models\Post::factory()
-                ->count(84)
+                ->count(10000)
                 ->state(new Sequence(
                     fn ($sequence) => ['user_id' => \App\Models\User::get()->except(1)->shuffle()->random()->id],
                 ))
