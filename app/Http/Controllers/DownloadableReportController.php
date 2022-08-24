@@ -18,14 +18,24 @@ class DownloadableReportController extends Controller
     public function __invoke(Request $request)
     {
         $validated = $request->validate([
-            'month' => 'required|integer|between:1,12',
+            'month' => 'nullable|integer|between:1,12',
+            'hijy' => 'nullable|integer|digits:4',
+            'user_id' => 'nullable|integer',
             'inline' => 'nullable'
         ]);
 
-        $min = now()->setMonth($validated['month'])->startOfMonth();
-        $max = now()->setMonth($validated['month'])->endOfMonth();
+        $reportType = 'year';
+        $postsQuery = Post::with('tags')->with('user')->where('hijri_year', '=', $request->filterable('hijy'));
 
-        $posts = Post::with('tags')->with('user')->whereBetween('created_at', [$min, $max])->get();
+        if (array_key_exists('month', $validated)) {
+            $postsQuery->where('hijri_month', $validated['month']);
+            $reportType = 'month';
+        } else if (array_key_exists('user_id', $validated)) {
+            $postsQuery->where('user_id', '=', $validated['user_id']);
+            $reportType = 'user';
+        }
+
+        $posts = $postsQuery->get();
         $tags = $posts->flatMap(fn ($i) => $i->tags)->unique(fn ($i) => $i->name);
         $users = $posts->map(fn ($i) => $i->user)->unique(fn ($i) => $i->username);
 
@@ -72,7 +82,7 @@ class DownloadableReportController extends Controller
         $pdf->AddPage();
 
         // Arabic and English content
-        $htmlcontent = \View::make('reports.simple', compact('performance', 'count', 'posts', 'users', 'tags'))->render();
+        $htmlcontent = \View::make('reports.simple', compact('performance', 'count', 'posts', 'users', 'tags'))->withType($reportType)->render();
         $pdf->WriteHTML($htmlcontent, true, 0, true, 0);
 
         //Close and output PDF document

@@ -13,25 +13,44 @@
   
   $months = [
     0 => '',
-    1 => 'يناير',
-    2 => 'فبراير',
-    3 => 'مارس',
-    4 => 'أبريل',
-    5 => 'مايو',
-    6 => 'يونيو',
-    7 => 'يوليو',
-    8 => 'أغسطس',
-    9 => 'سبتمبر',
-    10 => 'أكتوبر',
-    11 => 'نوفمبر',
-    12 => 'ديسمبر',
+    1 => 'محرم',
+    2 => 'صفر',
+    3 => 'ربيع الأول',
+    4 => 'ربيع الثاني',
+    5 => 'جمادى الأول',
+    6 => 'جمادى الثاني',
+    7 => 'رجب',
+    8 => 'شعبان',
+    9 => 'رمضان',
+    10 => 'شوال',
+    11 => 'ذو القعدة',
+    12 => 'ذو الحجة',
   ];
+
+  $reportHeading = '';
+  $tableHeading = '';
+  
+  switch ($type) {
+    case 'month':
+      $tableHeading = join(' ', ['الأرشيف الإلكتروني لشهر', '('.$months[request()->query('month')].')', request()->filterable('hijy'), 'هـ']);
+      $reportHeading = 'تقرير شهري';
+      break;
+    case 'user':
+      $tableHeading = join(' ', ['الأرشيف الإلكتروني للمستخدم', '('.optional(\App\Models\User::find(request()->query('user_id')))->username.')', request()->filterable('hijy'), 'هـ']);
+      $reportHeading = 'تقرير مستخدم';
+      break;
+    
+    default:
+      $tableHeading = join(' ', ['الأرشيف الإلكتروني لسنة', request()->filterable('hijy'), 'هـ']);
+      $reportHeading = 'تقرير سنوي';
+      break;
+  }
 @endphp
 
-<div role="heading" style="font-size: 1.3cm">تقرير الأرشيف</div>
+<div role="heading" style="font-size: 1.3cm">{{ $reportHeading }}</div>
 <span style="font-size: .5cm">{{ join(' ', ['بواسطة:', auth()->user()->roleName(), auth()->user()->username, 'في يوم', now()->isoFormat('dddd، Do MMMM YYYY، hh:mm')]) }}</span>
 <br />
-<h2>الأرشيف الإلكتروني لشهر ({{ $months[request()->query('month')] }}) {{ now()->year }}</h2>
+<h2>{{ $tableHeading }}</h2>
 
 <hr />
 <h3 style="font-size: .5cm">{{ __('Operations Summary') }}</h3>

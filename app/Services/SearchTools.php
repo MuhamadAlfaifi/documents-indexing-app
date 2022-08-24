@@ -72,6 +72,10 @@ class SearchTools
     
     public function hijy() 
     {
+        if ($this->request->missing('hijy')) {
+            return $this->defaultYear();
+        }
+        
         return (int) $this->request->query('hijy');
     }
 
