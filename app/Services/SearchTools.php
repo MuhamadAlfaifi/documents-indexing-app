@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class SearchTools
 {
-    public const NAMES = ['tag', 'user', 'from', 'to', 'query', 'sort'];
+    public const NAMES = ['tag', 'user', 'hijd', 'hijm', 'hijy', 'query', 'sort'];
 
     public function __construct(Request $request)
     {
@@ -36,6 +36,11 @@ class SearchTools
         return now();
     }
 
+    public function defaultYear()
+    {
+        return (int) Carbon::now()->toHijri()->format('Y');
+    }
+
     public function query()
     {
         if ($this->request->missing('query')) {
@@ -55,14 +60,19 @@ class SearchTools
         return $this->request->query('user');
     }
     
-    public function from() 
+    public function hijd() 
     {
-        return Carbon::create($this->request->query('from'));
+        return (int) $this->request->query('hijd');
     }
     
-    public function to() 
+    public function hijm() 
     {
-        return Carbon::create($this->request->query('to'));
+        return (int) $this->request->query('hijm');
+    }
+    
+    public function hijy() 
+    {
+        return (int) $this->request->query('hijy');
     }
 
     public function sort() 

@@ -50,18 +50,18 @@
         <div class="-mx-4 flex items-center  divide-x-reverse divide-x divide-gray-200">
           <div class="px-4 text-left">
             <x-reveal :defaultValue="request()->has('query')">
-              <x-slot:button>
+              <x-slot name="button">
                 <x-heroicons.search class="w-4 h-4 text-gray-400 hover:text-gray-600" />
-              </x-slot:button>
+              </x-slot>
               <div class="h-6">
-                <x-input.search class="w-52" />
+                <x-input.search name="query" class="w-52" />
               </div>
             </x-reveal>
           </div>
           
           <div class="px-4 text-left">
             <x-dropdown>
-              <x-slot:button>
+              <x-slot name="button">
                 <div class="group space-x-reverse space-x-1.5 inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" aria-expanded="false">
                   <span>التصنيفات</span>
   
@@ -70,7 +70,7 @@
                   @endif
                   <x-heroicons.chevron-down class="flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500" />
                 </div>
-              </x-slot:button>
+              </x-slot>
               <x-dropdown.menu class="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm" tabindex="0" aria-label="tags-dropdown-menu">
                 @foreach ($tags as $tag)
                 <x-dropdown.menu-item class="relative">
@@ -82,11 +82,11 @@
                     value="{{ $tag->id }}"
                     submit
                   >
-                    <x-slot:icon>
+                    <x-slot name="icon">
                       <span class="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-1.5">
                         <x-heroicons.check class="h-5 w-5" />
                       </span>
-                    </x-slot:icon>
+                    </x-slot>
                     {{ $tag->name }}
                   </x-input.menu>
                 </x-dropdown.menu-item>
@@ -97,7 +97,7 @@
 
           <div class="px-4 text-left">
             <x-dropdown>
-              <x-slot:button>
+              <x-slot name="button">
                 <div class="group space-x-reverse space-x-1.5 inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" aria-expanded="false">
                   <span>المستخدمين</span>
                   @if(request()->has('user'))
@@ -105,7 +105,7 @@
                   @endif                    
                   <x-heroicons.chevron-down class="flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500" />
                 </div>
-              </x-slot:button>
+              </x-slot>
               <x-dropdown.menu class="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm" tabindex="0" aria-label="users-dropdown-menu">
                 @foreach ($users as $user)
                 <x-dropdown.menu-item class="relative">
@@ -117,11 +117,11 @@
                     value="{{ $user->id }}"
                     submit
                   >
-                    <x-slot:icon>
+                    <x-slot name="icon">
                       <span class="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-1.5">
                         <x-heroicons.check class="h-5 w-5" />
                       </span>
-                    </x-slot:icon>
+                    </x-slot>
                     {{ $user->username }}
                   </x-input.menu>
                 </x-dropdown.menu-item>
@@ -131,19 +131,18 @@
           </div>
 
           <div class="px-4 text-left">              
-            <x-reveal :defaultValue="filled(request()->only(['from', 'to']))">
-              <x-slot:button>
+            <x-reveal :defaultValue="filled(request()->only(['hijd', 'hijm', 'hijy']))">
+              <x-slot name="button">
                 <div class="space-x-reverse space-x-1.5 inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 [&>svg]:hover:text-gray-600">
                   <span class="">التاريخ</span>
                   <x-heroicons.calendar class="h-4 w-4 text-gray-400" />
                 </div>
-              </x-slot:button>
+              </x-slot>
               <div class="h-6">
-                <div id="" class="block relative text-center px-2 w-full h-full border-0 border-b border-transparent rounded-md bg-gray-100 focus:border-indigo-600 focus:ring-0 sm:text-sm">
-                  <div class="w-52 relative top-1/2 -translate-y-1/2"></div>
-                  <x-input.date name="from" submit value="{{ request()->query('from') }}" />
-                  &larr;
-                  <x-input.date name="to" submit value="{{ request()->query('to') }}" />
+                <div class="flex space-x-reverse space-x-4 relative text-center w-full h-full border-none rounded-md focus:ring-0 sm:text-sm">
+                  <x-input.search type="number" name="hijd" placeholder="اليوم" min="0" :value="request()->query('hijd')" class="w-20" />
+                  <x-input.search type="number" name="hijm" placeholder="الشهر" min="0" :value="request()->query('hijm')" class="w-20" />
+                  <x-input.search type="number" name="hijy" placeholder="السنة" min="0" :value="request()->query('hijy') ?? request()->tools()->defaultYear()" class="w-20" />
                 </div>
               </div>
             </x-reveal>
@@ -169,10 +168,12 @@
             @foreach (request()->filters() as [$key, $value, $unfilter])
               @if($key === 'query')
                 <x-search.active-filter :href="$unfilter">{{ $value }}</x-search.active-filter>
-              @elseif($key === 'from')
-                <x-search.active-filter :href="$unfilter">من: {{ $value }}</x-search.active-filter>
-              @elseif($key === 'to')
-                <x-search.active-filter :href="$unfilter">إلى: {{ $value }}</x-search.active-filter>
+              @elseif($key === 'hijd')
+                <x-search.active-filter :href="$unfilter">اليوم: {{ $value }}</x-search.active-filter>
+              @elseif($key === 'hijm')
+                <x-search.active-filter :href="$unfilter">الشهر: {{ $value }}</x-search.active-filter>
+              @elseif($key === 'hijy')
+                <x-search.active-filter :href="$unfilter">السنة: {{ $value }}</x-search.active-filter>
               @elseif($key === 'tag')
                 <x-search.active-filter :href="$unfilter">{{ optional($tags->find($value))->name }}</x-search.active-filter>
               @elseif($key === 'user')
