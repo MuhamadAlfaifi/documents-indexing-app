@@ -6,10 +6,18 @@ class Query extends Filter
 {
     public function apply($builder)
     {
-        if (request()->filled('query')) {
+        $value = request()->query('query');
+        
+        if (empty($value)) {
+            return;
+        }
+
+        if (is_numeric($value)) {
+            $builder->where('no', '=', (int) $value);
+        } else {
             $builder
-                ->where('title', 'like', request()->filterable('query'))
-                ->orWhere('topic', 'like', request()->filterable('query'));
+                ->where('title', 'like', "%$value%")
+                ->orWhere('topic', 'like', "%$value%");
         }
     }
 }

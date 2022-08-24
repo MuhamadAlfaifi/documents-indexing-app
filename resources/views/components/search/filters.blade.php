@@ -4,7 +4,7 @@
 <section aria-labelledby="filter-heading">
   <h2 id="filter-heading" class="sr-only">الفلاتر</h2>
 
-  <form action="{{ route('search') }}" class="relative z-10 bg-white border-b border-gray-200 pb-4">
+  <form action="{{ route('search') }}" method="GET" class="relative z-10 bg-white border-b border-gray-200 pb-4">
     <div class="max-w-7xl mx-auto px-4 flex items-center justify-between sm:px-6 lg:px-8">
       <x-dropdown alignment="right">
         <x-slot name="button">
@@ -54,7 +54,7 @@
                 <x-heroicons.search class="w-4 h-4 text-gray-400 hover:text-gray-600" />
               </x-slot>
               <div class="h-6">
-                <x-input.search name="query" class="w-52" />
+                <x-input.search name="query" :value="request()->query('query')" placeholder="بحث: رقم، موضوع، اسم مستند" class="w-52" />
               </div>
             </x-reveal>
           </div>
@@ -146,6 +146,7 @@
                 </div>
               </div>
             </x-reveal>
+            <input type="submit" class="hidden absolute" />
           </div>
         </div>
       </div>
