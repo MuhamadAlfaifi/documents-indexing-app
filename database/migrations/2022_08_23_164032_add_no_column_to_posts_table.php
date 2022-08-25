@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->bigInteger('no')->default(999999);
+            $table->bigInteger('no');
         });
     }
 

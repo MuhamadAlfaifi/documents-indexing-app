@@ -14,9 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->integer('hijri_day')->default(1);
-            $table->integer('hijri_month')->default(10);
-            $table->integer('hijri_year')->default(1400);
+            $table->integer('hijri_day');
+            $table->integer('hijri_month');
+            $table->integer('hijri_year');
+            $table->timestamp('doc_date');
         });
     }
 
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->dropColumn('hijri_day');
             $table->dropColumn('hijri_month');
             $table->dropColumn('hijri_year');
+            $table->dropColumn('doc_date');
         });
     }
 };

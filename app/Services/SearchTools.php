@@ -82,7 +82,7 @@ class SearchTools
     public function sort() 
     {
         if ($this->request->missing('sort')) {
-            return ['created_at', 'desc'];
+            return ['updated_at', 'desc'];
         }
 
         return explode(',', $this->request->query('sort'));

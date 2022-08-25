@@ -7,6 +7,6 @@ return [
     'id-asc'             => 'الأصغر',
     'no-desc'            => 'تنازليا',
     'no-asc'             => 'تصاعديا',
-    'created_at-desc'    => 'الأحدث',
-    'created_at-asc'     => 'الأقدم',
+    'doc_date-desc'    => 'الأحدث',
+    'doc_date-asc'     => 'الأقدم',
 ];

@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
+const plugin = require('tailwindcss/plugin');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -19,5 +20,21 @@ module.exports = {
         },
     },
 
-    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+    plugins: [
+        require('@tailwindcss/forms'), 
+        require('@tailwindcss/typography'), 
+        plugin(function asterisk({ addComponents }) {
+            addComponents({
+                '.asterisk': {
+                    position: 'relative',
+                    '&::after': {
+                        content: '" *"',
+                        top: 0,
+                        left: -10,
+                        color: '#f00',
+                    },
+                },
+            });
+        }),
+    ],
 };

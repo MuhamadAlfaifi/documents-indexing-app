@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\SearchTools;
 use Pharaonic\Hijri\HijriCarbon;
+use App\Services\HijriCalculator;
 use \Illuminate\Support\Stringable;
 use \Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
@@ -34,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(125);
         
         $this->app->singleton(SearchTools::class);
+        $this->app->bind(HijriCalculator::class);
 
         // flattens query string parameters into a list of [kev,val] pairs
         Collection::macro('pairs', function () {

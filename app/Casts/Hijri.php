@@ -2,8 +2,10 @@
  
 namespace App\Casts;
  
-use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use InvalidArgumentException;
+use Illuminate\Support\Facades\App;
+use App\Services\HijriCalculator;
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
  
 class Hijri implements CastsAttributes
 {
@@ -36,10 +38,17 @@ class Hijri implements CastsAttributes
      */
     public function set($model, $key, $value, $attributes)
     {
+        $hijri = App::make(HijriCalculator::class);
+
+        $hijri->setDay((int) $value[0]);
+        $hijri->setMonth((int) $value[1]);
+        $hijri->setYear((int) $value[2]);
+
         return [
-            'hijri_day' => (int) \Str::of($value[0])->padLeft(2, 0)->value,
-            'hijri_month' => (int) \Str::of($value[1])->padLeft(2, 0)->value,
-            'hijri_year' => (int) $value[2],
+            'hijri_day' => $hijri->getDay(),
+            'hijri_month' => $hijri->getMonth(),
+            'hijri_year' => $hijri->getYear(),
+            'doc_date' => $hijri->asCarbon(),
         ];
     }
 }

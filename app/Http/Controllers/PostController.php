@@ -34,7 +34,7 @@ class PostController extends Controller
     {
         $currentHijriYear = (int) Carbon::now()->toHijri()->format('Y');
 
-        $posts = Post::with('tags')->where('hijri_year', '=', $currentHijriYear)->orderBy(...$request->filterable('sort'))->paginate(10);
+        $posts = Post::with('tags')->where('hijri_year', '=', $currentHijriYear)->orderBy(...request()->filterable('sort'))->paginate(10);
         $tags = Tag::all();
         $users = User::all()->except(1);
 
@@ -81,14 +81,15 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|min:3',
+            'no' => 'required|numeric',
             'tag_id' => 'required|integer|exists:App\Models\Tag,id',
             'topic' => 'required|string',
-            'keywords' => 'string|nullable',
+            'keywords' => 'required|string',
             'hijri' => 'array|required',
             'hijri.0' => 'required|numeric|digits_between:1,2|max:31|min:0',
             'hijri.1' => 'required|numeric|digits_between:1,2|max:12|min:0',
             'hijri.2' => 'required|numeric|digits:4',
-        ]);;
+        ]);
 
         $validated['user_id'] = auth()->user()->id;
         
@@ -138,9 +139,14 @@ class PostController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|min:3',
+            'no' => 'required|numeric',
             'tag_id' => 'required|integer|exists:App\Models\Tag,id',
             'topic' => 'required|string',
-            'keywords' => 'string|nullable',
+            'keywords' => 'required|string',
+            'hijri' => 'array|required',
+            'hijri.0' => 'required|numeric|digits_between:1,2|max:31|min:0',
+            'hijri.1' => 'required|numeric|digits_between:1,2|max:12|min:0',
+            'hijri.2' => 'required|numeric|digits:4',
         ]);
         
         \DB::transaction(function () use ($post, $validated) {

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Services\HijriCalculator;
+use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,13 +18,20 @@ class PostFactory extends Factory
      */
     public function definition()
     {
+        $hijri = App::make(HijriCalculator::class);
+
+        $hijri->setDay(fake()->numberBetween(10, 30));
+        $hijri->setMonth(fake()->numberBetween(1, 12));
+        $hijri->setYear(fake()->numberBetween(1430, 1444));
+
         return [
             'title' => fake()->name(),
             'no' => fake()->numberBetween(1000000, 9999999),
             'topic' => fake()->name(),
-            'hijri_day' => fake()->numberBetween(10, 30),
-            'hijri_month' => fake()->numberBetween(1, 12),
-            'hijri_year' => fake()->numberBetween(1430, 1444),
+            'hijri_day' => $hijri->getDay(),
+            'hijri_month' => $hijri->getMonth(),
+            'hijri_year' => $hijri->getYear(),
+            'doc_date' => $hijri->asCarbon(),
         ];
     }
 }

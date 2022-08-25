@@ -16,7 +16,7 @@
           </div>
         </x-slot>
         <x-dropdown.menu>
-          @foreach (['title' => 'إسم المستند', 'no' => 'رقم المستند'] as $idx => $field)
+          @foreach (['doc_date' => 'تاريخ المستند', 'title' => 'إسم المستند', 'no' => 'رقم المستند'] as $idx => $field)
             <x-dropdown.menu-item>
               <x-input.menu 
                 :checked="request()->query('sort', 'created_at,desc') === join(',', ([$idx,'desc']))" 
