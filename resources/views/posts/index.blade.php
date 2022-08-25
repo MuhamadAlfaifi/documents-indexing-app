@@ -3,7 +3,7 @@
 
   <div class="bg-white">
     <div class="text-center py-16 px-4 sm:px-6 lg:px-8">
-      <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">{{ __(request()->routeIs('posts.index') ? 'Year Posts' : 'Posts') }}</h1>
+      <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">{{ __(request()->routeIs('posts.index') ? 'Year Posts' : 'Search Results') }}</h1>
     </div>
     
     <!-- Search Filters -->
