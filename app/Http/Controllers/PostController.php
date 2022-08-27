@@ -79,25 +79,22 @@ class PostController extends Controller
      */
     public function store(CreatePostRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|min:3',
-            'no' => 'required|numeric',
-            'tag_id' => 'required|integer|exists:App\Models\Tag,id',
-            'topic' => 'required|string',
-            'keywords' => 'required|string',
-            'hijri' => 'array|required',
-            'hijri.0' => 'required|numeric|digits_between:1,2|max:31|min:0',
-            'hijri.1' => 'required|numeric|digits_between:1,2|max:12|min:0',
-            'hijri.2' => 'required|numeric|digits:4',
-        ]);
+        $validated = $this->validateForm($request);
 
         $validated['user_id'] = auth()->user()->id;
-        
-        $post = Post::create($validated);
 
-        $post->tags()->attach($validated['tag_id']);
-                
-        $post->addMediaFromDisk(MediaPath::getUploadedFile($request, false), 'local')->toMediaCollection();
+        $post = \DB::transaction(function () use ($validated, $request) {
+            $post = Post::create($validated);
+    
+            $post->tags()->attach($validated['tag_id']);
+                    
+            $post->seizeMedia(
+                MediaPath::getUploadedFile($request, false)
+            );
+
+            return $post;
+        });
+        
 
         return redirect(route('posts.show', ['post' => $post->id]));
     }
@@ -137,17 +134,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|min:3',
-            'no' => 'required|numeric',
-            'tag_id' => 'required|integer|exists:App\Models\Tag,id',
-            'topic' => 'required|string',
-            'keywords' => 'required|string',
-            'hijri' => 'array|required',
-            'hijri.0' => 'required|numeric|digits_between:1,2|max:31|min:0',
-            'hijri.1' => 'required|numeric|digits_between:1,2|max:12|min:0',
-            'hijri.2' => 'required|numeric|digits:4',
-        ]);
+        $validated = $this->validateForm($request);
         
         \DB::transaction(function () use ($post, $validated) {
             $post->update($validated);
@@ -169,5 +156,20 @@ class PostController extends Controller
         $post->delete();
 
         return redirect(\App\Providers\RouteServiceProvider::HOME);
+    }
+
+    private function validateForm($request)
+    {
+        return $request->validate([
+            'title' => 'required|string|min:3',
+            'no' => 'required|numeric',
+            'tag_id' => 'required|integer|exists:App\Models\Tag,id',
+            'topic' => 'required|string',
+            'keywords' => 'required|string',
+            'hijri' => 'array|required',
+            'hijri.0' => 'required|numeric|digits_between:1,2|max:31|min:0',
+            'hijri.1' => 'required|numeric|digits_between:1,2|max:12|min:0',
+            'hijri.2' => 'required|numeric|digits:4',
+        ]);
     }
 }

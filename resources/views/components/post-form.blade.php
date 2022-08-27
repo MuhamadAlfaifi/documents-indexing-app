@@ -11,7 +11,7 @@
       $htmlMethod = 'post';
       break;
     default:
-      $htmlMethod = 'get';
+      $htmlMethod = $method;
       break;
   }
 @endphp

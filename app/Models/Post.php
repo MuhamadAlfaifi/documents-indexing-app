@@ -51,4 +51,9 @@ class Post extends Model implements HasMedia
     {
         return Carbon::createFromTimestamp($this->doc_date);
     }
+
+    public function seizeMedia($path)
+    {
+        $this->addMediaFromDisk($path, 'local')->toMediaCollection();
+    }
 }
