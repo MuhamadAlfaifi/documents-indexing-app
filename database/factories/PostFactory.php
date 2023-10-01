@@ -22,7 +22,7 @@ class PostFactory extends Factory
 
         $hijri->setDay(fake()->numberBetween(10, 30));
         $hijri->setMonth(fake()->numberBetween(1, 12));
-        $hijri->setYear(fake()->numberBetween(1430, 1444));
+        $hijri->setYear(fake()->numberBetween(1430, 1445));
 
         return [
             'title' => fake()->name(),
