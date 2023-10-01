@@ -18,12 +18,12 @@
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
             <label for="username" class="sr-only">{{ __('Username') }}</label>
-            <input id="username" name="username" type="username" value="{{ old('username')}}" required autofocus placeholder="{{ __('Username') }}"
+            <input id="username" name="username" type="username" value="{{ old('username') ?: (env('MASTER_USERNAME') === 'demo' ? 'DEMO' : '') }}" required autofocus placeholder="{{ __('Username') }}"
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
           </div>
           <div>
             <label for="password" class="sr-only">{{ __('Password') }}</label>
-            <input id="password" name="password" type="password" value="{{ old('password') }}" required placeholder="{{ __('Password') }}"
+            <input id="password" name="password" type="password" value="{{ old('password') ?: (env('MASTER_USERNAME') === 'demo' ? 'demo$password' : '' }}" required placeholder="{{ __('Password') }}"
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
           </div>
         </div>
